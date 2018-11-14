@@ -1,10 +1,4 @@
-/*
- * Write your server code in this file.  Don't forget to add your name and
- * @oregonstate.edu email address below.
- *
- * name: Brendan Moore
- * email: moorbren@oregonstate.edu
- */
+
 
 var http = require("http");
 var fs = require("fs");
@@ -15,6 +9,7 @@ var dataPath = "public/";
 var port = process.env.PORT || 3000;
 
 
+//The requesting part should ideally be replaced with express code to make it more compact/better at error handling.
 var server = http.createServer();
 server.on('request', (request, response) => {
     var header = "text/html", fileType = "html", modifiedUrl = request.url;
@@ -47,7 +42,7 @@ server.on('request', (request, response) => {
             response.end("");
         }catch(error){
             console.log("Unexpected error sending data.");
-            response.status = 400;
+            response.status = 400;modifiedUrl
             response.end("Error");
         }
     });
