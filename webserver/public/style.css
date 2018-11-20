@@ -1,12 +1,24 @@
 
+/*NAVBAR*/
+
 nav {
-    background: #D2B082;
-    position:absolute;
-    top:0;
+    position:fixed;
+    top:-1.5em;
     clear: both;
     width: 100%;
     font-family:fantasy;
     font-size:1.5em;
+}
+
+#navShow {
+    position: fixed;
+    top:0;
+    right:0;
+    margin-right: 1%;
+    font-size: 1.5em;
+    color: red;
+    background: rgba(50,250,105,0.8);
+    font-weight: 1000;
 }
 
 nav span {
@@ -14,6 +26,7 @@ nav span {
 }
 
 nav a {
+    background: #D2B082;
     text-decoration:none;
     border-style: solid;
 }
@@ -34,13 +47,59 @@ nav a::after {
     text-align:right;
 }
 
+
+/*END NAVBAR*/
+
+/*TITLE*/
+#pageTitle {
+    text-align: center;
+    font-size: 3em;
+    font-family: fantasy;
+    font-weight: lighter;
+    padding: 1em;
+    border-style: solid;
+    outline-style: solid;
+    outline-color: orange;
+}
+/*END TITLE*/
+
+/*SIDEBAR*/
+
 aside {
     float: left;
     width: 20%;
     background: fuchsia;
 }
 
+/*END SIDEBAR*/
+
+/*MAIN PAGE*/
+
 main {
     margin-left: 20%;
+    margin-right:3%;
     background:chartreuse;
+    display: flex;
+    flex-flow: row wrap;
 }
+
+.itemFrame {
+    height: 10em;
+    background: cyan;
+    text-align: center;
+    margin: 5px;
+    padding: 5px;
+}
+
+.itemImage {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+
+.itemDetails {
+    display:block;
+
+}
+
+/*END MAIN PAGE*/
