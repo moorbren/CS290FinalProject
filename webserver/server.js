@@ -2,6 +2,8 @@
 
 var http = require("http");
 var fs = require("fs");
+var express = require("express");
+var exphbr = require("express-handlebars");
 var fileCache = []
 var fileNames = []
 var dataPath = "public/";
@@ -11,8 +13,8 @@ var port = process.env.PORT || 3000;
 
 //The requesting part should ideally be replaced with express code to make it more compact/better at error handling.
 var server = http.createServer();
-server.on('request', (request, response) => {
-    var header = "text/html", fileType = "html", modifiedUrl = request.url;
+server.on('request', (req, res) => {
+    var header = "text/html", fileType = "html", modifiedUrl = req.url;
 
     // "/" request returns index.html
     if(modifiedUrl == "/")
@@ -22,9 +24,9 @@ server.on('request', (request, response) => {
         var file = null;
         if(!error){//if file can be accessed without error
             header = getHeader(getFileExtension(modifiedUrl));
-            response.status = 200;
+            res.status = 200;
         }else{//on fail, serves default page
-            response.status =404;
+            res.status =404;
             var fileType = getFileExtension(modifiedUrl);
             header = "text/html";
             modifiedUrl = dataPath + "404.html";
@@ -33,17 +35,17 @@ server.on('request', (request, response) => {
         //gets the file requested by the user, error checked previously
         file = getFile(modifiedUrl);
 
-        console.log("Requested URL:" + request.url);
-        console.log("===status:"+ response.status);
+        console.log("Requested URL:" + req.url);
+        console.log("===status:"+ res.status);
         console.log("===header:"+header);
         try{
-            response.setHeader("Content-Type", header);
-            response.write(file);
-            response.end("");
+            res.setHeader("Content-Type", header);
+            res.write(file);
+            res.end("");
         }catch(error){
             console.log("Unexpected error sending data.");
-            response.status = 400;modifiedUrl
-            response.end("Error");
+            res.status = 400;modifiedUrl
+            res.end("Error");
         }
     });
     

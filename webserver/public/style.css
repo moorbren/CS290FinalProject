@@ -1,0 +1,46 @@
+
+nav {
+    background: #D2B082;
+    position:absolute;
+    top:0;
+    clear: both;
+    width: 100%;
+    font-family:fantasy;
+    font-size:1.5em;
+}
+
+nav span {
+    float: left;
+}
+
+nav a {
+    text-decoration:none;
+    border-style: solid;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+/* 
+nav a::before {
+    content:"|";
+}
+nav a::after {
+    content:"|";
+} */
+
+#logLink {
+    float:right;
+    text-align:right;
+}
+
+aside {
+    float: left;
+    width: 20%;
+    background: fuchsia;
+}
+
+main {
+    margin-left: 20%;
+    background:chartreuse;
+}
