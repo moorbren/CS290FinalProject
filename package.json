@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
     "handlebars": "^4.0.12",
     "mongodb": "^3.1.10"
   },
@@ -13,7 +14,8 @@
   },
   "scripts": {
     "run": "node public/server.js",
-    "test": "nodemon public/server.js"
+    "build": "handlebars ./views/*.handlebars ./views/partials/*.handlebars -f public/compiled.js",
+    "dev": "nodemon public/server.js"
   },
   "repository": {
     "type": "git",
