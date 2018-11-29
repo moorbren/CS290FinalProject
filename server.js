@@ -19,8 +19,8 @@ var exphbs = require('express-handlebars');
 app.use(express.static('public'));
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
- 
 
+/*
 app.get('/posts/:postID', function(req,res,next){
   var tempID = parseInt(req.params.postID);
   var postArray = postData["posts"];
@@ -31,6 +31,7 @@ app.get('/posts/:postID', function(req,res,next){
     res.status(404).render('404');
   }
 });
+*/
 
 app.get('/', function(req, res, next){
   res.status(200).render('index', postData);
