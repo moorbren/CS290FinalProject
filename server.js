@@ -26,7 +26,7 @@ app.get('*', function (req, res) {
 });
 
 app.listen(port, function () {
-  console.log("== Server is listening on port", 3000);
+  console.log("== Server is listening on port", port);
 });
 
 
