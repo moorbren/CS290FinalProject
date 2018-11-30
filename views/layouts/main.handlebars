@@ -1,0 +1,22 @@
+<html>
+    <!--Mockup for what the final page should look like. Figured it'd be easier to make templates after building the actual page.-->
+    <head>
+        <meta charset="utf-8">
+        <title>The Store Game</title>
+        <link rel="stylesheet" href="test.css">
+        <script src="/index.js" charset="utf-8" defer></script>
+
+        <!-- Handlebars scripts. -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.runtime.js" charset="utf-8" defer></script>
+        <script src="/compiled.js" charset="utf-8" defer></script>
+
+        <!-- Insert additional header things here. -->
+        {{options}}
+    </head>
+
+    <body>
+      {{> header}}
+      {{{body}}}
+    </body>
+
+</html>

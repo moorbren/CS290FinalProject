@@ -13,9 +13,9 @@
     "nodemon": "^1.18.7"
   },
   "scripts": {
-    "run": "node public/server.js",
+    "run": "node ./server.js",
     "build": "handlebars ./views/*.handlebars ./views/partials/*.handlebars -f public/compiled.js",
-    "dev": "nodemon public/server.js"
+    "dev": "nodemon ./server.js"
   },
   "repository": {
     "type": "git",
