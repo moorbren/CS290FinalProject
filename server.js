@@ -25,6 +25,8 @@ var db;
 var app = express();
 var port = process.env.PORT || 3000;
 
+var itemsArray;
+
 var availablePages = ['home', 'store', 'supplies', 'crafting']; 
 
 app.use(express.static('public'));
@@ -47,7 +49,7 @@ app.get('/store', function(req, res, next){
     }
     userInfo=usr[0];
 
-    
+
 
     res.status(200).render("store", {
       Username: userInfo.name,
@@ -131,6 +133,7 @@ mongoClient.connect(mongoURL, function(err, client) {
   }
   db = client.db(mongoDBName);
   //startGameLoop();
+  getItemObjects();
   app.listen(port, function () {
     console.log("== Server is listening on port", port);
     const timeoutScheduled = Date.now();
@@ -160,7 +163,10 @@ app.get('/posts/:postID', function(req,res,next){
 
 
 function getItemObjects(arr) {
-  db.items.find({$or, arr});
+  db.items.find({}).toArray(function(err, arr){
+    itemsArray=arr;
+
+  });
 }
 
 
