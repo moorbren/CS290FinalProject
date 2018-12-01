@@ -137,6 +137,16 @@
   margin-top: var(--headerSize);
 }
 
+#gameDesc{
+    width: 700px;
+    height: 400px;
+    border: 2px solid black;
+    padding: 5px;
+    float: left;
+    display: inline-block;
+    margin-left: var(--edgeDistance);
+}
+
 #backdrop {
   position: fixed;
   top: 0;

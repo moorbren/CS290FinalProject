@@ -18,6 +18,7 @@ var path = require('path');
 var express = require('express');
 var handlebars = require('handlebars');
 var exphbs = require('express-handlebars');
+var favicon = require('serve-favicon');
 
 var mongoClient = require('mongodb').MongoClient;
 var mongoHost = process.env.MONGO_HOST;
@@ -40,6 +41,7 @@ var itemsArray;
 var availablePages = ['home', 'store', 'supplies', 'crafting'];
 
 app.use(express.static('public'));
+app.use(favicon('public/favicon.ico'));
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
@@ -64,7 +66,7 @@ app.get('/store', function(req, res, next){
 	console.log(userInfo);
     res.status(200).render("store", userInfo);
     console.log(userInfo);
-    
+
   });
 });
 
@@ -76,7 +78,7 @@ app.get('/supplies', function(req, res, next){
     }
     userInfo=usr[0];
     userInfo["itemsToDisplay"] = itemsInStock;
-    
+
     res.status(200).render("supplies", userInfo);
   });
 
@@ -172,7 +174,7 @@ mongoClient.connect(mongoURL, function(err, client) {
 
 
 
- 
+
 
 
 /*
