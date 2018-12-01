@@ -36,6 +36,44 @@ app.get('/', function(req, res, next){
   res.status(200).render('home');
 });
 
+app.get('/store', function(req, res, next){
+  console.log("==incoming request-URL::", req.url);
+  var userInfo;
+  console.log("db::", db);
+  console.log("collection()====", db.collection('playerStats'));
+  db.collection('playerStats').find({name:"JoeyFatone"}).toArray(function(err, usr) {
+    if (err) {
+      throw err;
+    }
+    userInfo=usr[0];
+
+
+
+    res.status(200).render("store", {
+      Username: userInfo.name,
+      earnings: userInfo.totalEarnings,
+      bank: userInfo.cash,
+      joinDate: userInfo.start,
+    } );
+  });
+
+
+
+
+});
+
+app.get('/supplies', function(req, res, next){
+  console.log("==incoming request-URL::", req.url);
+  res.status(200).render("supplies");
+
+});
+
+app.get('/crafting', function(req, res, next){
+  console.log("==incoming request-URL::", req.url);
+  res.status(200).render("crafting");
+
+})
+
 app.get('/:section', function(req, res, next){
   console.log("==incoming request-URL::", req.url);
   var pageId = availablePages.indexOf(req.params.section);
@@ -109,22 +147,10 @@ mongoClient.connect(mongoURL, function(err, client) {
         console.log("== Server is listening on port", port);
         const timeoutScheduled = Date.now();
     });
+
 });
 
 
-
-
-
-
-/*
-app.get('/posts/:postID', function(req,res,next){
-  var tempID = parseInt(req.params.postID);
-  var postArray = postData["posts"];
-  if(Number.isInteger(tempID) && tempID < postArray.length && tempID >= 0){
-    // console.log(postArray[tempID])
-    res.status(200).render('single-post', postArray[tempID]);
-  }else{
-    res.status(404).render('404');
-  }
-});
-*/
+function getItemObjects(arr) {
+  db.items.find({$or, arr});
+}
