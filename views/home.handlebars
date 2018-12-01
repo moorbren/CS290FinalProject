@@ -1,14 +1,17 @@
 <div class="page">
     {{> leaderboard}}
     <div id="inventory" >
+        <div class="titleParent" >
+            <h1>Inventory</h1>
+        </div>
         <div class="itemFrame">
-            <div class="itemTitle">
-                {{name}}
-            </div>
-            <img class="itemImage" src={{img}} alt={{name}}/>
-            <div class="itemDetails">
-                Price:{{price}}<button>Change</button>
-            </div>
+            <img class="itemImage" src="sprites/icon_01.png" alt={{name}}/>
+            <span class="itemDetails">
+                Price:$420<button>Change</button>
+            </span>
+            <span class="itemTitle">
+                ItemName
+            </span>
         </div>
     </div>
 

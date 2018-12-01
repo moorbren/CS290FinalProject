@@ -117,7 +117,16 @@
 }
 
 #inventory{
+    float: left;
+    width: 500px;
+    min-height:400px;
+    border: 2px solid black;
+    padding: 10px;
+    margin-left: var(--edgeDistance);
+}
 
+#inventory > .itemElement{
+    display: inline-block;
 }
 
 #error404 {
