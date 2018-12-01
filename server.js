@@ -9,6 +9,19 @@ var express = require('express');
 var handlebars = require('handlebars');
 var exphbs = require('express-handlebars');
 
+var mongoClient = require('mongodb').MongoClient;
+var mongoHost = process.env.MONGO_HOST;
+var mongoPort = process.env.MONGO_PORT || 27017;
+var mongoUser = process.env.MONGO_USER;
+var mongoPassword = process.env.MONGO_USER;
+var mongoDBName = process.env.MONGO_DB_NAME;
+var mongoURL =
+	'mongodb://' + mongoUser + ':' + mongoPassword + '@' +
+  mongoHost + ':' + mongoPort + '/' + mongoDBName;
+  
+var db;
+
+
 var app = express();
 var port = process.env.PORT || 3000;
 
@@ -70,14 +83,24 @@ function startGameLoop() {
   tickServer();
 }
 
-startGameLoop();
 
-app.listen(port, function () {
-  console.log("== Server is listening on port", port);
-  const timeoutScheduled = Date.now();
-
+mongoClient.connect(mongoURL, function(err, client) {
+  if (err){
+    console.log("mongoURL:: " , mongoURL);
+    throw err;
+  }
+  db = client.db(mongoDBName);
+  startGameLoop();
+  app.listen(port, function () {
+    console.log("== Server is listening on port", port);
+    const timeoutScheduled = Date.now();
+    
+  });
   
 });
+
+
+
 
 
 
