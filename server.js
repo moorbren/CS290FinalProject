@@ -61,10 +61,12 @@ app.get('/store', function(req, res, next){
       throw err;
     }
     userInfo=usr[0];
-	console.log(userInfo);
-    res.status(200).render("store", userInfo);
-    console.log(userInfo);
-    
+    db.collection(userInfo.name).find({}).toArray(function(err, userItems) {
+
+      userInfo["itemsToDisplay"] = userItems.map(function(a){return itemsArray[a.id];});
+      res.status(200).render("store", userInfo);
+      console.log(userInfo);
+    });
   });
 });
 
