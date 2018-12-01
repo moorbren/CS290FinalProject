@@ -83,6 +83,7 @@
 }
 
 #sidebar{
+    display: inline-block;
     margin-left: var(--edgeDistance);
     padding: 10px;
     width: 200px;
@@ -91,7 +92,10 @@
 }
 
 #inventory{
-    
+    float: right;
+    min-width: 500;
+    min-height: 500;
+    border-radius: 2px solid black;
 }
 
 #error404 {
