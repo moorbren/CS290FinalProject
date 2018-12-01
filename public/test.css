@@ -125,8 +125,9 @@
     margin-left: var(--edgeDistance);
 }
 
-#inventory > .itemElement{
-    display: inline-block;
+.itemElement{
+    border: 1px solid black;
+    text-align: center;
 }
 
 #error404 {
