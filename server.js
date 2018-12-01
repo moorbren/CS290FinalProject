@@ -5,6 +5,11 @@
 var TOP_PLAYER_REFRESH_DELAY = 600000;
 var NUM_TOP_PLAYERS = 5;
 var topPlayers = [];
+var allPlayers = [];
+
+var STOCK_REFRESH_DELAY = 600000;
+var NUM_ITEMS_STOCK = 5;
+var itemsInStock = [];
 
 
 
@@ -54,19 +59,34 @@ app.get('/store', function(req, res, next){
     }
     userInfo=usr[0];
     res.status(200).render("store", userInfo);
+    console.log(userInfo);
+    
   });
 });
 
 app.get('/supplies', function(req, res, next){
   console.log("==incoming request-URL::", req.url);
-  res.status(200).render("supplies");
+  db.collection('playerStats').find({name:"JoeyFatone"}).toArray(function(err, usr) {
+    if (err) {
+      throw err;
+    }
+    userInfo=usr[0];
+    userInfo["itemsToDisplay"] = itemsInStock;
+    
+    res.status(200).render("supplies", userInfo);
+  });
 
 });
 
 app.get('/crafting', function(req, res, next){
   console.log("==incoming request-URL::", req.url);
-  res.status(200).render("crafting");
-
+  db.collection('playerStats').find({name:"JoeyFatone"}).toArray(function(err, usr) {
+    if (err) {
+      throw err;
+    }
+    userInfo=usr[0];
+    res.status(200).render("crafting", userInfo);
+  });
 })
 
 app.get('/:section', function(req, res, next){
@@ -128,6 +148,9 @@ mongoClient.connect(mongoURL, function(err, client) {
   //startGameLoop();
   db.collection('items').find({}).toArray(function(err, arr){
     itemsArray=arr;
+    itemsArray.sort(function(a,b){return a.id-b.id;})
+    console.log(itemsArray);
+    restockItems();
     db.collection('playerStats').find({}).toArray(function(err, playerStatistics) {
 
       getTopPlayers(playerStatistics);
@@ -145,7 +168,7 @@ mongoClient.connect(mongoURL, function(err, client) {
 
 
 
-
+ 
 
 
 /*
@@ -174,10 +197,33 @@ function getTopPlayers(playerStatistics) {
     return a.totalEarnings - b.totalEarnings;
   });
 
-  topPlayers=playerStatistics.slice(0,NUM_TOP_PLAYERS);
+  allPlayers=playerStatistics;
+
+  topPlayers=allPlayers.slice(0,NUM_TOP_PLAYERS);
 
 
 
   setTimeout(recalcTopPlayers, TOP_PLAYER_REFRESH_DELAY);
 }
 
+function restockItems() {
+  if (NUM_ITEMS_STOCK >= itemsArray.length) {
+    itemsInStock=itemsArray;
+    return;
+  }
+  out = [];
+  for (i = 0; i < NUM_ITEMS_STOCK; i++) {
+    var temp = getRandomArbitrary(0, itemsArray.length);
+    while (out.indexOf(temp) !== -1) {
+      temp = getRandomArbitrary(0, itemsArray.length);
+    }
+    out.push(temp);
+  }
+  itemsInStock = out.map(function(n){return itemsArray[n];});
+  setTimeout(restockItems,STOCK_REFRESH_DELAY);
+}
+
+
+function getRandomArbitrary(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
