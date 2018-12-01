@@ -1,6 +1,7 @@
  * { /* Default settings */
   --headerSize: 50px;
   --edgeDistance: 20px;
+  --colorOrangy: #FFA36C;
 
   /* navBarHeight() */
   margin: 0px; /* Fixes the navBar having space around it */
@@ -83,6 +84,7 @@
 }
 
 #sidebar{
+    background: var(--colorOrangy);
     margin-left: var(--edgeDistance);
     padding: 10px;
     width: 200px;
@@ -90,8 +92,27 @@
     border: 2px solid black;
 }
 
+#sidebar > div{
+    margin-bottom: 8px;
+    font-size: 20px;
+}
+
+#sidebar span{
+    font-size: 16px;
+}
+
+.titleParent{
+    font-size: 12px;
+    font-family: "MedievalSharp";
+    border: 1px solid black;
+    background: lightgrey;
+    padding: 2px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
 #inventory{
-    
+
 }
 
 #error404 {
@@ -126,6 +147,11 @@
   margin: 40px auto;
   background-color: #fff;
   border-radius: 15px;
+}
+
+.moneyText{
+    color: lightgreen;
+    text-shadow: 1px 1px black;
 }
 
 .shadowedText{
