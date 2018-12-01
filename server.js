@@ -2,6 +2,11 @@
  * Server code. Stuff regarding sending data to users. Price changes and number crunching are done in database.js.
  */
 
+var TOP_PLAYER_REFRESH_DELAY = 600000;
+var NUM_TOP_PLAYERS = 5;
+var topPlayers = [];
+
+
 
 var fs = require("fs");
 var path = require('path');
@@ -35,14 +40,14 @@ app.set('view engine', 'handlebars');
 
 app.get('/', function(req, res, next){
   console.log("==200 incoming request-URL::", req.url);
-  res.status(200).render('home');
+  res.status(200).render('home', {users: topPlayers});
 });
 
 app.get('/store', function(req, res, next){
   console.log("==incoming request-URL::", req.url);
   var userInfo;
-  console.log("db::", db);
-  console.log("collection()====", db.collection('playerStats'));
+  //console.log("db::", db);
+  //console.log("collection()====", db.collection('playerStats'));
   db.collection('playerStats').find({name:"JoeyFatone"}).toArray(function(err, usr) {
     if (err) {
       throw err;
@@ -51,7 +56,7 @@ app.get('/store', function(req, res, next){
 
 
 
-    res.status(200).render("store", {
+    res.status(200).render("store",{
       Username: userInfo.name,
       earnings: userInfo.totalEarnings,
       bank: userInfo.cash,
@@ -135,13 +140,18 @@ mongoClient.connect(mongoURL, function(err, client) {
   //startGameLoop();
   db.collection('items').find({}).toArray(function(err, arr){
     itemsArray=arr;
+    db.collection('playerStats').find({}).toArray(function(err, playerStatistics) {
 
-    app.listen(port, function () {
-      console.log("== Server is listening on port", port);
-      const timeoutScheduled = Date.now();
-      
+      getTopPlayers(playerStatistics);
+
+
+
+      app.listen(port, function () {
+        console.log("== Server is listening on port", port);
+        const timeoutScheduled = Date.now();
+        
+      });
     });
-  
   });
 });
 
@@ -164,4 +174,22 @@ app.get('/posts/:postID', function(req,res,next){
 */
 
 
+function recalcTopPlayers() {
+  db.collection('playerStats').find({}).toArray(function(err, playerStatistics) {
+    getTopPlayers(playerStatistics);
+  });
+}
+
+function getTopPlayers(playerStatistics) {
+
+  playerStatistics.sort(function(a, b){
+    return a.totalEarnings - b.totalEarnings;
+  });
+
+  topPlayers=playerStatistics.slice(0,NUM_TOP_PLAYERS);
+
+
+
+  setTimeout(recalcTopPlayers, TOP_PLAYER_REFRESH_DELAY);
+}
 
