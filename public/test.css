@@ -1,12 +1,18 @@
  * { /* Default settings */
   --headerSize: 50px;
-  font-family:fantasy;
+  --edgeDistance: 20px;
+
   /* navBarHeight() */
   margin: 0px; /* Fixes the navBar having space around it */
 }
 
+.page{
+    margin-top: var(--headerSize);
+}
+
 /*NAVBAR*/
 #navBar { /*parent of links to pages */
+    font-family: "MedievalSharp",fantasy;
     top: 0;
     background: gray;
     border-style: solid;
@@ -36,11 +42,21 @@
 }
 
 #logLink {
-  /* margin-right: 30px; */
   float: right;
 }
 
-#navBar a {
+#navBarName{
+    text-align: center;
+    display: inline;
+    float: left;
+    font-size: 40px;
+    font-weight: bold;
+    /* margin-top: 4px; */
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.navBarItem{
     padding: 2px;
     display: inline;
     background: #FFFFFF;
@@ -57,10 +73,65 @@
     text-decoration: underline;
 }
 
-.shadowedText{
-  text-shadow: 1px 1px lightgrey; 
+#leaderboard{
+    float: right;
+    width: 600px;
+    height: 250px;
+    border: 2px solid black;
+    padding: 4px;
+    margin-right: var(--edgeDistance);
+}
+
+#sidebar{
+    margin-left: var(--edgeDistance);
+    padding: 10px;
+    width: 200px;
+    height: 500px;
+    border: 2px solid black;
+}
+
+#inventory{
+    
 }
 
 #error404 {
   margin-top: var(--headerSize);
+}
+
+#backdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+#loginModal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1010;
+  overflow: scroll;
+}
+
+.modalDialog {
+  width: auto;
+  max-width: 600px;
+  min-width: 350px;
+  min-height: 300px;
+  margin: 40px auto;
+  background-color: #fff;
+  border-radius: 15px;
+}
+
+.shadowedText{
+  text-shadow: 1px 1px lightgrey;
+}
+
+.hidden {
+  display: none;
 }
