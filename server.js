@@ -44,8 +44,11 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 app.get('/', function(req, res, next){
-  console.log("==200 incoming request-URL::", req.url);
-  res.status(200).render('home', {users: topPlayers});
+	db.collection('JoeyFatone').find({}).toArray(function(err, user){
+		console.log("user",user);
+	});
+	console.log("==200 incoming request-URL::", req.url);
+	res.status(200).render('home', {users: topPlayers});
 });
 
 app.get('/store', function(req, res, next){
