@@ -1,7 +1,9 @@
 <aside id="sidebar" >
-    {{Username}} <br/>
-    Total Earnings: {{earnings}}<br/>
-    Current bank: {{bank}}<br/>
-    Global Rank: {{rank}}<br/>
-    User since: {{joinDate}}<br/>
+    <div class="titleParent">
+        <h1>{{name}} </h1>
+    </div>
+    <div>Total Earnings: <span class="moneyText" >${{totalEarnings}}</span></div>
+    <div>Current bank: <span class="moneyText" >${{cash}}</span></div>
+    <div>Global Rank: {{rank}}</div>
+    <div>User since: {{start}}</div>
 </aside>
