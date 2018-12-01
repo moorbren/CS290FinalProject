@@ -58,6 +58,7 @@ app.get('/store', function(req, res, next){
       throw err;
     }
     userInfo=usr[0];
+	console.log(userInfo);
     res.status(200).render("store", userInfo);
     console.log(userInfo);
     
@@ -160,7 +161,7 @@ mongoClient.connect(mongoURL, function(err, client) {
       app.listen(port, function () {
         console.log("== Server is listening on port", port);
         const timeoutScheduled = Date.now();
-        
+
       });
     });
   });
