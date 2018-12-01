@@ -36,10 +36,50 @@ app.get('/', function(req, res, next){
   res.status(200).render('home');
 });
 
+app.get('/store', function(req, res, next){
+  console.log("==incoming request-URL::", req.url);
+  var userInfo;
+  console.log("db::", db);
+  console.log("collection()====", db.collection('playerStats'));
+  db.collection('playerStats').find({name:"JoeyFatone"}).toArray(function(err, usr) {
+    if (err) {
+      throw err;
+    }
+    userInfo=usr[0];
+
+    
+
+    res.status(200).render("store", {
+      Username: userInfo.name,
+      earnings: userInfo.totalEarnings,
+      bank: userInfo.cash,
+      joinDate: userInfo.start,
+    } );
+  });
+
+
+
+
+});
+
+app.get('/supplies', function(req, res, next){
+  console.log("==incoming request-URL::", req.url);
+  res.status(200).render("supplies");
+
+});
+
+app.get('/crafting', function(req, res, next){
+  console.log("==incoming request-URL::", req.url);
+  res.status(200).render("crafting");
+
+})
+
 app.get('/:section', function(req, res, next){
   console.log("==incoming request-URL::", req.url);
-  if (availablePages.indexOf(req.params.section) > -1) {
-    console.log("==section found::"+req.params.section);
+  var section = req.params.section.toLowerCase();
+  if (availablePages.indexOf(section) > -1) {
+    console.log("==section found::"+section);
+    
     res.status(200).render(req.params.section);
   }
   else {
@@ -85,12 +125,12 @@ function startGameLoop() {
 
 
 mongoClient.connect(mongoURL, function(err, client) {
+  console.log("mongoURL:: " , mongoURL);
   if (err){
-    console.log("mongoURL:: " , mongoURL);
     throw err;
   }
   db = client.db(mongoDBName);
-  startGameLoop();
+  //startGameLoop();
   app.listen(port, function () {
     console.log("== Server is listening on port", port);
     const timeoutScheduled = Date.now();
@@ -116,3 +156,12 @@ app.get('/posts/:postID', function(req,res,next){
   }
 });
 */
+
+
+
+function getItemObjects(arr) {
+  db.items.find({$or, arr});
+}
+
+
+
