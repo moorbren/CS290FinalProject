@@ -133,13 +133,16 @@ mongoClient.connect(mongoURL, function(err, client) {
   }
   db = client.db(mongoDBName);
   //startGameLoop();
-  getItemObjects();
-  app.listen(port, function () {
-    console.log("== Server is listening on port", port);
-    const timeoutScheduled = Date.now();
-    
-  });
+  db.collection('items').find({}).toArray(function(err, arr){
+    itemsArray=arr;
+
+    app.listen(port, function () {
+      console.log("== Server is listening on port", port);
+      const timeoutScheduled = Date.now();
+      
+    });
   
+  });
 });
 
 
@@ -159,15 +162,6 @@ app.get('/posts/:postID', function(req,res,next){
   }
 });
 */
-
-
-
-function getItemObjects(arr) {
-  db.items.find({}).toArray(function(err, arr){
-    itemsArray=arr;
-
-  });
-}
 
 
 
