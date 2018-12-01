@@ -53,19 +53,7 @@ app.get('/store', function(req, res, next){
       throw err;
     }
     userInfo=usr[0];
-<<<<<<< HEAD
-
-
-
-    res.status(200).render("store",{
-      Username: userInfo.name,
-      earnings: userInfo.totalEarnings,
-      bank: userInfo.cash,
-      joinDate: userInfo.start,
-    } );
-=======
     res.status(200).render("store", userInfo);
->>>>>>> 966ef0023c498092cb8ab5382863379e4b43c229
   });
 });
 
@@ -145,7 +133,6 @@ mongoClient.connect(mongoURL, function(err, client) {
       getTopPlayers(playerStatistics);
 
 
-<<<<<<< HEAD
 
       app.listen(port, function () {
         console.log("== Server is listening on port", port);
@@ -153,14 +140,6 @@ mongoClient.connect(mongoURL, function(err, client) {
         
       });
     });
-=======
-    app.listen(port, function () {
-      console.log("== Server is listening on port", port);
-      const timeoutScheduled = Date.now();
-
-    });
-
->>>>>>> 966ef0023c498092cb8ab5382863379e4b43c229
   });
 });
 
@@ -181,7 +160,6 @@ app.get('/posts/:postID', function(req,res,next){
   }
 });
 */
-<<<<<<< HEAD
 
 
 function recalcTopPlayers() {
@@ -203,5 +181,3 @@ function getTopPlayers(playerStatistics) {
   setTimeout(recalcTopPlayers, TOP_PLAYER_REFRESH_DELAY);
 }
 
-=======
->>>>>>> 966ef0023c498092cb8ab5382863379e4b43c229
