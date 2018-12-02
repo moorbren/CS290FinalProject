@@ -19,6 +19,7 @@ var express = require('express');
 var handlebars = require('handlebars');
 var exphbs = require('express-handlebars');
 var favicon = require('serve-favicon');
+var bodyParser = require('body-parser');
 
 var mongoClient = require('mongodb').MongoClient;
 var mongoHost = process.env.MONGO_HOST;
@@ -40,7 +41,9 @@ var itemsArray;
 
 var availablePages = ['home', 'store', 'supplies', 'crafting'];
 
+app.use(bodyParser.json());
 app.use(express.static('public'));
+app.use(express.json());
 app.use(favicon('public/favicon.ico'));
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
@@ -120,6 +123,11 @@ app.get('/:section', function(req, res, next){
 app.get('*', function (req, res) {
   console.log("==404 incoming request-URL::", req.url);
   res.status(404).render('404');
+});
+
+app.post("/store", function(req, res, next) {
+  //Post Function HERE
+
 });
 
 var time; //variable used to calculate deltaTime.
