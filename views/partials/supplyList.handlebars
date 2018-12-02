@@ -1,10 +1,15 @@
+
+<!-- Feel free to make any changes I just need the script and something with the id "buyButton" so I can get a click event attached.
+-->
 <script src="/supplies.js" charset="utf-8" defer></script>
+
+
 <div id="inventory" >
     <div class="titleParent">
         <h1>Supplies</h1>
     </div>
     {{#each itemsToDisplay}}
-        {{> item}}
+        {{> item index=@key}}
     {{/each}}
 </div>
 <button id="buyButton">Buy!</button>

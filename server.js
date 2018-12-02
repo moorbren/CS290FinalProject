@@ -33,6 +33,10 @@ var mongoURL =
 
 var db;
 
+handlebars.registerHelper('json', function(context) {
+  return JSON.stringify(context);
+});
+
 
 var app = express();
 var port = process.env.PORT || 3000;
@@ -89,6 +93,7 @@ app.get('/supplies', function(req, res, next){
     }
     userInfo=usr[0];
     userInfo["itemsToDisplay"] = itemsInStock;
+    console.log(itemsInStock);
 
     res.status(200).render("supplies", userInfo);
   });
@@ -129,6 +134,11 @@ app.post("/store", function(req, res, next) {
   //Post Function HERE
 
 });
+app.post("/supplies", function(req, res, next) {
+  //Post Function HERE
+
+});
+
 
 var time; //variable used to calculate deltaTime.
 var tickTime = 2500; //milliseconds between "frames"
