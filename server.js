@@ -66,7 +66,11 @@ app.get('/store', function(req, res, next){
 
     db.collection(userInfo.name).find({}).toArray(function(err, userItems) {
 
-      userInfo["itemsToDisplay"] = userItems.map(function(a){return itemsArray[a.id];});
+      userInfo["items"] = userItems.map(function(a){
+        var out = itemsArray[a.id];
+        out.quantity=a.quantity;
+        out.boughAtPrice = a.price; 
+      });
       res.status(200).render("store", userInfo);
       console.log(userInfo);
     });
@@ -164,6 +168,9 @@ mongoClient.connect(mongoURL, function(err, client) {
 
       getTopPlayers(playerStatistics);
 
+      console.log("=======\n===\n===\n===\n===\n=======");
+      buyItem("JoeyFatone",[1,2,3,0],[810,215,179,493],[100,100,100,100]);
+
 
 
       app.listen(port, function () {
@@ -235,4 +242,28 @@ function restockItems() {
 
 function getRandomArbitrary(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback) {
+  var itemsPurchased;
+  db.collection(username).find({id: {$in : itemIds}}).toArray(function(err, arr){
+    itemsPurchased = arr; //owned items
+    console.log("::itemsPurchased::");
+    console.log(itemsPurchased);
+    for (i = 0; i < itemIds.length; i++) {
+      //itemIds is the array of ids of items being purchased.
+      var playerOwnedItem = itemsPurchased.find(function(item){
+        return item.id == itemIds[i];
+      });
+      if (playerOwnedItem) {
+        //player has previously purchased this item. 
+        console.log("id: ", itemIds[i], "|| playerPrice:", playerOwnedItem.price, "|| marketPrice:", purchasePrices[i]);
+      }
+      else {
+        //player has not previously purchased this item.
+        console.log("id: ", itemIds[i], "|| undefined:", playerOwnedItem, "|| marketPrice:", purchasePrices[i]);
+      }
+    }
+  });
 }
