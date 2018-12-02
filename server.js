@@ -171,6 +171,19 @@ mongoClient.connect(mongoURL, function(err, client) {
 
       console.log("=======\n===\n===\n===\n===\n=======");
       //buyItem("JoeyFatone",[1,2,3,0],[810,215,179,493],[1,1,1,1]);
+      buySingleItem("JoeyFatone", 24, 100, 10, function(err, response) {
+        if (err) {
+          console.log("error 500");
+        }
+        else {
+          if (response.result.ok > 0) {
+            console.log("success!");
+          }
+          else {
+            console.log("The operation was a failure.");
+          }
+        }
+      });
 
 
 
@@ -245,7 +258,18 @@ function getRandomArbitrary(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-
+/**
+ * This function holds the framework for buying items.
+ * 
+ * However, I think it may be best to, instead of posting a single request for all of the items, posting a request for each item.
+ * This can be done via a client-side for loop, and would not only greatly reduce the complexity of the server-side code,
+ * but also potentially give the player a more active feedback by allowing a separate post response for each of the items.
+ * 
+ * Now, there are ways to do these things without the multiple post requests, but the code gets a little complicated.
+ * More complicated than the spaghetti that is the following function.
+ * 
+ * 
+ */
 function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback) {
   var itemsPurchased;
   db.collection(username).find({id: {$in : itemIds}}).toArray(function(err, arr){
@@ -279,3 +303,48 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
     }
   });
 }
+
+/**
+ * Cleaned-up buyItem
+ * 
+ * Works for buying a single item, then calls the callback, which it assumes to be something that'll take the (err, result) args
+ */
+
+ function buySingleItem(username, itemId, purchasePrice, purchaseQuantity, callback) {
+   
+   db.collection(username).find({id: itemId}).toArray(function(err, arr) {
+     var playerOwnedItem=arr[0];
+     var costIncurred = purchasePrice * purchaseQuantity;
+
+     if (playerOwnedItem) {
+      var totalPaid = playerOwnedItem.price * playerOwnedItem.quantity;
+      
+      var totalAmount = playerOwnedItem.quantity + purchaseQuantity;
+      var avgCost = (totalPaid + costIncurred) / totalAmount;
+      db.collection(username).updateOne({id: itemId}, {$set: {quantity: totalAmount, price: avgCost}}, function (err, result) {
+        console.log("idk");
+        if (err) {
+          callback(err, result);
+        }
+        else {
+          if (result) {
+            db.collection("playerStats").updateOne({name: username}, {$inc: {cash: -(costIncurred)}}, callback);
+          }
+          else {
+            callback(err, undefined);
+          }
+        }
+      });
+     }
+     else {//player has never purchased this item before.
+      db.collection(username).insertOne({id: itemId, quantity: purchaseQuantity, price:purchasePrice}, function(err, result){
+        if (err) {
+          callback(err, result);
+        }
+        else if (result.result.ok > 0) {
+          db.collection("playerStats").updateOne({name: username}, {$inc: {cash: -(costIncurred)}}, callback);
+        }
+      }); 
+     }
+   });
+ }
