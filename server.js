@@ -169,7 +169,7 @@ mongoClient.connect(mongoURL, function(err, client) {
       getTopPlayers(playerStatistics);
 
       console.log("=======\n===\n===\n===\n===\n=======");
-      buyItem("JoeyFatone",[1,2,3,0],[810,215,179,493],[100,100,100,100]);
+      buyItem("JoeyFatone",[1,2,3,0],[810,215,179,493],[1,1,1,1]);
 
 
 
@@ -259,10 +259,21 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
       if (playerOwnedItem) {
         //player has previously purchased this item. 
         console.log("id: ", itemIds[i], "|| playerPrice:", playerOwnedItem.price, "|| marketPrice:", purchasePrices[i]);
+        console.log("id: ", itemIds[i], "|| playerQuantity:", playerOwnedItem.quantity, "|| purchasing:", purchaseQuantities[i]);
+        var totalPaid     = playerOwnedItem.price * playerOwnedItem.quantity;
+        var incurredCost  = purchasePrices[i] * purchaseQuantities[i];
+        var totalAmount   = playerOwnedItem.quantity + purchaseQuantities[i];
+        var avgCost = (totalPaid+incurredCost) / totalAmount;
+        console.log("id: ", itemIds[i], "|| playerQuantity:", playerOwnedItem.quantity, "|| totalAmount:", purchaseQuantities[i]);
+        db.collection(username).updateOne({id:itemIds[i]}, {$set: {price:avgCost, quantity:totalAmount}}, function(err, res){console.log(itemIds[i], " went through");});
+        db.collection("playerStats").updateOne({name: username}, {$inc: {cash: -(purchasePrices[i]*purchaseQuantities[i])}}, function(err, res){console.log(itemIds[i], " went through");});
       }
       else {
         //player has not previously purchased this item.
         console.log("id: ", itemIds[i], "|| undefined:", playerOwnedItem, "|| marketPrice:", purchasePrices[i]);
+        //db.collection(username).updateOne({id:itemIds[i]}, {price:avgCost, quantity:totalAmount}, callback);
+        db.collection(username).insertOne({id: itemIds[i], quantity: purchaseQuantities[i], price: purchasePrices[i]}, function(err, res){console.log(itemIds[i], " went through");});
+        db.collection("playerStats").updateOne({name: username}, {$inc: {cash: -(purchasePrices[i]*purchaseQuantities[i])}}, function(err, res){console.log(itemIds[i], " went through");});
       }
     }
   });
