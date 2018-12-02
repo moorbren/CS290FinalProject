@@ -130,13 +130,14 @@ app.get('*', function (req, res) {
   res.status(404).render('404');
 });
 
-app.post("/store", function(req, res, next) {
+app.post("/store/:username/sell", function(req, res, next) {
   //Post Function HERE
 
 });
-app.post("/supplies", function(req, res, next) {
+app.post("/supplies/:username/buy", function(req, res, next) {
   //Post Function HERE
-
+  
+  res.status(200).send("Success");
 });
 
 
