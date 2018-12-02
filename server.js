@@ -69,7 +69,8 @@ app.get('/store', function(req, res, next){
       userInfo["items"] = userItems.map(function(a){
         var out = itemsArray[a.id];
         out.quantity=a.quantity;
-        out.boughAtPrice = a.price; 
+        out.boughtAtPrice = a.price; 
+        return out;
       });
       res.status(200).render("store", userInfo);
       console.log(userInfo);
@@ -169,7 +170,7 @@ mongoClient.connect(mongoURL, function(err, client) {
       getTopPlayers(playerStatistics);
 
       console.log("=======\n===\n===\n===\n===\n=======");
-      buyItem("JoeyFatone",[1,2,3,0],[810,215,179,493],[1,1,1,1]);
+      //buyItem("JoeyFatone",[1,2,3,0],[810,215,179,493],[1,1,1,1]);
 
 
 
@@ -265,16 +266,16 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
         var totalAmount   = playerOwnedItem.quantity + purchaseQuantities[i];
         var avgCost = (totalPaid+incurredCost) / totalAmount;
         console.log("id: ", itemIds[i], "|| playerQuantity:", playerOwnedItem.quantity, "|| totalAmount:", purchaseQuantities[i]);
-        db.collection(username).updateOne({id:itemIds[i]}, {$set: {price:avgCost, quantity:totalAmount}}, function(err, res){console.log(itemIds[i], " went through");});
-        db.collection("playerStats").updateOne({name: username}, {$inc: {cash: -(purchasePrices[i]*purchaseQuantities[i])}}, function(err, res){console.log(itemIds[i], " went through");});
+        db.collection(username).updateOne({id:itemIds[i]}, {$set: {price:avgCost, quantity:totalAmount}}, function(err, res){console.log("PURCHASEOWNED::", res);});
       }
       else {
         //player has not previously purchased this item.
         console.log("id: ", itemIds[i], "|| undefined:", playerOwnedItem, "|| marketPrice:", purchasePrices[i]);
         //db.collection(username).updateOne({id:itemIds[i]}, {price:avgCost, quantity:totalAmount}, callback);
-        db.collection(username).insertOne({id: itemIds[i], quantity: purchaseQuantities[i], price: purchasePrices[i]}, function(err, res){console.log(itemIds[i], " went through");});
-        db.collection("playerStats").updateOne({name: username}, {$inc: {cash: -(purchasePrices[i]*purchaseQuantities[i])}}, function(err, res){console.log(itemIds[i], " went through");});
+        db.collection(username).insertOne({id: itemIds[i], quantity: purchaseQuantities[i], price: purchasePrices[i]}, function(err, res){console.log("PURCHASENEW:",i,":", res);});
       }
+      
+      db.collection("playerStats").updateOne({name: username}, {$inc: {cash: -(purchasePrices[i]*purchaseQuantities[i])}}, function(err, res){console.log("DEBIT:",itemIds,":",i,":",itemIds[i],":", res,"|=|=|=|=|", res.result);});
     }
   });
 }
