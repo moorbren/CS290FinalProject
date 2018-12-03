@@ -129,13 +129,25 @@
 }
 
 .itemElement{
+    padding: 4px;
     border: 1px solid black;
     border-bottom: 0px;
 }
 
-.itemDropdown option{
+.lastItemElement{
+    padding: 4px;
+    border: 1px solid black;
+}
+
+.itemDropdown{
     padding: 0px;
-    margin: 0px;
+    /* color: green; */
+    /* box-sizing: content-box; */
+}
+
+.itemText{
+    border: 1px solid black;
+    padding:1px;
 }
 
 .notItemImage{
@@ -153,7 +165,7 @@
 }
 
 #gameDesc{
-    width: 700px;
+    width: 650px;
     height: 400px;
     border: 2px solid black;
     padding: 5px;

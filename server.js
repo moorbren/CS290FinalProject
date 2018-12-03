@@ -48,7 +48,7 @@ var availablePages = ['home', 'store', 'supplies', 'crafting'];
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(express.json());
-app.use(favicon('public/favicon.ico'));
+app.use(favicon('public/images/favicon.ico'));
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
@@ -76,7 +76,7 @@ app.get('/store', function(req, res, next){
       userInfo["items"] = userItems.map(function(a){
         var out = itemsArray[a.id];
         out.quantity=a.quantity;
-        out.boughtAtPrice = a.price; 
+        out.boughtAtPrice = a.price;
         return out;
       });
       res.status(200).render("store", userInfo);
@@ -332,15 +332,15 @@ function getRandomArbitrary(min, max) {
 
 /**
  * This function holds the framework for buying items.
- * 
+ *
  * However, I think it may be best to, instead of posting a single request for all of the items, posting a request for each item.
  * This can be done via a client-side for loop, and would not only greatly reduce the complexity of the server-side code,
  * but also potentially give the player a more active feedback by allowing a separate post response for each of the items.
- * 
+ *
  * Now, there are ways to do these things without the multiple post requests, but the code gets a little complicated.
  * More complicated than the spaghetti that is the following function.
- * 
- * 
+ *
+ *
  */
 function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback) {
   var itemsPurchased;
@@ -354,7 +354,7 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
         return item.id == itemIds[i];
       });
       if (playerOwnedItem) {
-        //player has previously purchased this item. 
+        //player has previously purchased this item.
         console.log("id: ", itemIds[i], "|| playerPrice:", playerOwnedItem.price, "|| marketPrice:", purchasePrices[i]);
         console.log("id: ", itemIds[i], "|| playerQuantity:", playerOwnedItem.quantity, "|| purchasing:", purchaseQuantities[i]);
         var totalPaid     = playerOwnedItem.price * playerOwnedItem.quantity;
@@ -370,7 +370,7 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
         //db.collection(username).updateOne({id:itemIds[i]}, {price:avgCost, quantity:totalAmount}, callback);
         db.collection(username).insertOne({id: itemIds[i], quantity: purchaseQuantities[i], price: purchasePrices[i]}, function(err, res){console.log("PURCHASENEW:",i,":", res);});
       }
-      
+
       db.collection("playerStats").updateOne({name: username}, {$inc: {cash: -(purchasePrices[i]*purchaseQuantities[i])}}, function(err, res){console.log("DEBIT:",itemIds,":",i,":",itemIds[i],":", res,"|=|=|=|=|", res.result);});
     }
   });
@@ -378,19 +378,19 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
 
 /**
  * Cleaned-up buyItem
- * 
+ *
  * Works for buying a single item, then calls the callback, which it assumes to be something that'll take the (err, result) args
  */
 
  function buySingleItem(username, itemId, purchasePrice, purchaseQuantity, callback) {
-   
+
    db.collection(username).find({id: itemId}).toArray(function(err, arr) {
      var playerOwnedItem=arr[0];
      var costIncurred = purchasePrice * purchaseQuantity;
 
      if (playerOwnedItem) {
       var totalPaid = playerOwnedItem.price * playerOwnedItem.quantity;
-      
+
       var totalAmount = playerOwnedItem.quantity + purchaseQuantity;
       var avgCost = (totalPaid + costIncurred) / totalAmount;
       db.collection(username).updateOne({id: itemId}, {$set: {quantity: totalAmount, price: avgCost}}, function (err, result) {
@@ -416,7 +416,7 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
         else if (result.result.ok > 0) {
           db.collection("playerStats").updateOne({name: username}, {$inc: {cash: -(costIncurred)}}, callback);
         }
-      }); 
+      });
      }
    });
  }

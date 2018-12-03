@@ -12,8 +12,12 @@ var loginButton = document.querySelector("#modalLogin");
 loginButton.addEventListener('click', function(){
     var usernameText = document.querySelector("#usernameInput");
     var passText = document.querySelector("#passwordInput");
-    login(usernameText.value + "", passText.value + "");
-    toggleLogin();
+    if(passText.value == "" || usernameText.value == ""){
+        alert("No fields can be empty!");
+    }else{
+        login(usernameText.value + "", passText.value + "");
+        toggleLogin();
+    }
 });
 
 
@@ -58,4 +62,45 @@ function login(username, password){
     // postRequest.setRequestHeader('Content-Type', 'application/json');
     // postRequest.send(requestBody);
     console.log(username, " p:" ,password);
+}
+
+function compileItemData(itemElements){
+    for(var x = 0; x < itemElements.length; x++){
+        itemData.push(JSON.parse(itemElements[x].getAttribute('data')));
+    }
+    return itemData;
+}
+
+
+//this section is supposed to add elements to the itemData array
+//  and then it finds the max itemCounts and sets the dropdown accordingly
+function compileItemDropdowns(itemElements, itemData){
+    for(var x = 0; x < itemData.length; x++){
+        var dropdown = itemElements[x].getElementsByTagName('select')[0];
+        var itemCount = parseInt(itemData[x].quantity);
+        if(itemCount >= 1){
+            var clampedCount = Math.min(itemCount,10); //if itemCount is greater than 10, returns 10
+            for(var y = 0; y <= clampedCount; y++){
+                dropdown.insertAdjacentHTML('afterbegin','<option value="' + y +'">'+ y + '</option>');
+            }
+            if(itemCount >= 11){
+                clampedCount = Math.min(itemCount,50); //if itemCount is greater than 50, returns 50
+                for(var y = 20; y <= clampedCount; y+=10){
+                    dropdown.insertAdjacentHTML('afterbegin','<option value="' + y +'">'+ y + '</option>');
+                }
+                if(itemCount >= 75){
+                    dropdown.insertAdjacentHTML('afterbegin','<option value="' + 75 +'">'+ 75 + '</option>');
+                    if(itemCount >= 100){
+                        dropdown.insertAdjacentHTML('afterbegin','<option value="' + 100 +'">'+ 100 + '</option>');
+                        if(itemCount >= 200){
+                            dropdown.insertAdjacentHTML('afterbegin','<option value="' + 200 +'">'+ 200 + '</option>');
+                            if(itemCount >= 201){
+                                dropdown.insertAdjacentHTML('afterbegin','<option value="' + itemCount +'">'+ itemCount + '</option>');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
