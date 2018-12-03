@@ -104,3 +104,23 @@ function compileItemDropdowns(itemElements, itemData){
         }
     }
 }
+
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+function randomizeColors(){
+    var all = document.getElementsByTagName("*");
+    for(var x = 0; x < all.length; x++){
+        all[x].style.background = getRandomColor();
+        all[x].style.color = getRandomColor();
+        all[x].style.fontSize = Math.floor(Math.random() * 30)+8;
+    }
+}
+//comment this out for some fun
+// window.setInterval(randomizeColors, 50);
