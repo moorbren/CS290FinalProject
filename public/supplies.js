@@ -17,7 +17,7 @@ function handleBuyButton() {
                 var requestBody = JSON.stringify({
                     id: itemInfo.id,
                     quantity: quantityInput.value,
-                    user: username
+                    price: itemInfo.price
                 });
 
                 postRequest.addEventListener('load', function(event) {

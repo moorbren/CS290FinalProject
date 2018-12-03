@@ -136,8 +136,59 @@ app.post("/store/:username/sell", function(req, res, next) {
 });
 app.post("/supplies/:username/buy", function(req, res, next) {
   //Post Function HERE
-  
-  res.status(200).send("Success");
+  var username = req.params.username;
+  if (req.body && req.body.id && req.body.quantity && (req.body.quantity > 0)){
+    db.collection('playerStats').find({name:username}).toArray(function(err, arr){
+      if (err) {
+        res.status(500).send("userDB could not connect");
+        return;
+      }
+      if(arr.length <= 0) {
+        res.status(400).send("user could not be found");
+        return;
+      }
+      var userInfo = arr[0];
+      var totalCost = req.body.quantity * req.body.price;
+      console.log("totalCost::", totalCost);
+      console.log("cash::", userInfo.cash);
+      if (userInfo.cash < totalCost) {
+        res.status(400).send("You don't have enough money.");
+        return;
+      }
+      var itemInTransaction = itemsInStock.find(function(a){return (a.id === req.body.id);});
+      console.log("itemInTransaction::", itemInTransaction);
+      if (itemInTransaction && (itemInTransaction.price === req.body.price)) {
+        buySingleItem(username, req.body.id, req.body.price, parseInt(req.body.quantity), function(err, result){
+          if (err) {
+            res.status(500).send("::An error occured::");
+            return;
+          }
+          if (result.result.ok > 0) {
+            //This is the place where to handle the successful purchase.
+            var receipt = {
+              itemId: req.body.id,
+              price: totalCost
+            }
+            res.status(200).send("purchase completed successfully! Item:"+ JSON.stringify(itemsArray[req.body.id].name));
+            return;
+          }
+          else {
+            res.status(500).send("something went wrong..."+ JSON.stringify(result));
+            return;
+          }
+        });
+      }
+      else {
+        res.status(400).send("Unfortunately, the item could not be found at the specified price");
+        return;
+      }
+    });
+  }
+  else {
+    res.status(500).send("Invalid purchase request.");
+    return;
+  }
+  return;
 });
 
 
@@ -190,6 +241,7 @@ mongoClient.connect(mongoURL, function(err, client) {
 
       console.log("=======\n===\n===\n===\n===\n=======");
       //buyItem("JoeyFatone",[1,2,3,0],[810,215,179,493],[1,1,1,1]);
+      /*
       buySingleItem("JoeyFatone", 24, 100, 10, function(err, response) {
         if (err) {
           console.log("error 500");
@@ -203,6 +255,7 @@ mongoClient.connect(mongoURL, function(err, client) {
           }
         }
       });
+      */
 
 
 
@@ -346,7 +399,7 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
           callback(err, result);
         }
         else {
-          if (result) {
+          if (result.result.ok) {
             db.collection("playerStats").updateOne({name: username}, {$inc: {cash: -(costIncurred)}}, callback);
           }
           else {
