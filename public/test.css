@@ -130,7 +130,22 @@
 
 .itemElement{
     border: 1px solid black;
-    text-align: center;
+    border-bottom: 0px;
+}
+
+.itemDropdown option{
+    padding: 0px;
+    margin: 0px;
+}
+
+.notItemImage{
+    margin-bottom: 6px;
+}
+
+.itemImage{
+    height: 17px;
+    width:17px;
+    padding-top: 4px;
 }
 
 #error404 {
