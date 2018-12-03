@@ -169,7 +169,7 @@ app.post("/supplies/:username/buy", function(req, res, next) {
               itemId: req.body.id,
               price: totalCost
             }
-            res.status(200).send("purchase completed successfully! Item:"+ JSON.stringify(itemsArray[req.body.id].name));
+            res.status(200).send(receipt);
             return;
           }
           else {

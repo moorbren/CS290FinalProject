@@ -21,7 +21,21 @@ function handleBuyButton() {
                 });
 
                 postRequest.addEventListener('load', function(event) {
-                    console.log("purchase of ",itemInfo.name," complete");
+                    //handling response from server.
+                    var responseObject = JSON.parse(event.target.response);
+                    console.log(responseObject);
+                    if (event.target.status === 200) {
+                        //purchase complete
+                        var cashElem = document.getElementById("cash");
+                        console.log(cashElem.innerText.slice(1));
+                        console.log(responseObject.price);
+                        var remainingCash = parseInt(cashElem.innerText.slice(1)) - responseObject.price;
+                        cashElem.innerText = "$" + remainingCash;
+                    }
+                    else {
+                        //bad stuff
+                    }
+                    console.log(event.target.response);
                 });
 
                 postRequest.setRequestHeader('Content-Type', 'application/json');
