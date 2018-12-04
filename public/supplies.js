@@ -48,6 +48,11 @@ function handleBuyButton() {
 
 window.addEventListener('DOMContentLoaded', function() {
     username = "JoeyFatone"; //TODO :: put code here for getting the user info
+    var dat = [];
+    for(var x = 0; x < 1000; x++){
+        dat.push(x);
+    }
+    loadChart(dat);
 
     var buyButton = document.getElementById("buyButton");
     if (buyButton) {
