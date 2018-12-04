@@ -98,7 +98,7 @@ body{
     background: var(--colorOrangy);
     margin-left: var(--edgeDistance);
     padding: 10px;
-    width: 200px;
+    width: 260px;
     height: 500px;
     border: 2px solid black;
     display: inline-block;
@@ -111,6 +111,12 @@ body{
 
 #sidebar span{
     font-size: 16px;
+}
+
+.sidebarInfoParent{
+    border: 1px solid black;
+    background: white;
+    padding: 4px;
 }
 
 .titleParent{
@@ -150,7 +156,12 @@ table, th, td {
     text-align: center;
     white-space:nowrap;
 }
-
+#sidebarTable{
+    white-space: normal;
+    background: white;
+}
+.boldMan{font-weight: bold;}
+.notBoldMan{font-weight: normal;}
 .indexCell{
     width: 60px;
 }
@@ -343,4 +354,7 @@ table, th, td {
     border: none;
     bottom: 0px;
     left: 0px;
+}
+#hell:focus{
+    outline:0;
 }

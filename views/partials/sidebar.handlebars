@@ -2,8 +2,12 @@
     <div class="titleParent">
         <h1>{{name}} </h1>
     </div>
-    <div>Total Earnings: <span class="moneyText" id="earnings" >${{totalEarnings}}</span></div>
-        <div>Current bank: <span class="moneyText" id="cash" >${{cash}}</span></div>
-    <div>Global Rank: {{rank}}</div>
-    <div>User since: {{start}}</div>
+    <table id="sidebarTable" class="tableDefault">
+        <tbody>
+            <tr><td class="boldMan">Total Earnings: <span class="moneyText notBoldMan" id="earnings" >${{totalEarnings}}</span></td></tr>
+            <tr><td class="boldMan">Current bank: <span class="moneyText notBoldMan" id="cash" >${{cash}}</span></td></tr>
+            <tr><td class="boldMan">Global Rank: <span class="notBoldMan">{{rank}}</span></td></tr>
+            <tr><td class="boldMan">User since: <span class="notBoldMan">{{start}}</span></td></tr>
+        </tbody>
+    </table>
 </aside>
