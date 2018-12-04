@@ -37,6 +37,11 @@ handlebars.registerHelper('json', function(context) {
   return JSON.stringify(context);
 });
 
+handlebars.registerHelper("inc", function(value, options){
+    return parseInt(value) + 1;
+});
+
+
 
 var app = express();
 var port = process.env.PORT || 3000;

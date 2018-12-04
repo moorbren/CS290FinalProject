@@ -18,6 +18,7 @@ body{
 
 .page{
     margin-top: var(--headerSize);
+    display: flex;
 }
 
 /*NAVBAR*/
@@ -93,7 +94,6 @@ body{
 }
 
 #sidebar{
-    float: left;
     background: var(--colorOrangy);
     margin-left: var(--edgeDistance);
     padding: 10px;
@@ -128,7 +128,6 @@ body{
 }
 
 #inventory{
-    float: left;
     width: auto;
     min-height:400px;
     border: 2px solid black;
@@ -141,22 +140,26 @@ table, th, td {
    padding: 3px 3px;
 }
 
-#itemTable{
+.tableDefault{
     border-collapse: collapse;
     width: 100%;
     border-spacing: 20px;
+    text-align: center;
+    white-space:nowrap;
+}
+
+.indexCell{
+    width: 60px;
 }
 
 .itemCatagories{
     background: #ffffb2;
-    padding: 40px;
 }
 .itemCatagories > th{
     padding: 4px 8px;
 }
 
 .itemElement{
-    text-align: center;
     background: white;
 }
 
@@ -201,7 +204,10 @@ table, th, td {
 }
 
 .earningsChart{
+    margin-right: 20px;
     background-color: white;
+    flex-basis: 100%;
+    max-height: 600px;
 }
 
 #error404 {
@@ -305,9 +311,9 @@ table, th, td {
     /* text-decoration:  */
 }
 
-.moneyTextLoss{
+.moneyTextBad{
     color: darkred;
-    text-shadow: 0px 0px 5px yellow;
+    text-shadow: 0px 0px 2px red;
 }
 
 .moneyText{

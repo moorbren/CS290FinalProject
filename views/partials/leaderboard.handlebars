@@ -2,9 +2,16 @@
     <div class="titleParent" >
         <h1>Leaderboard</h1>
     </div>
-    <div class="leaderboardBody">
-        {{#each users}}
-            {{> user}}
-        {{/each}}
-    </div>
+    <table class="tableDefault" >
+        <tbody>
+            <tr class="itemCatagories">
+                <th class="indexCell">#</th>
+                <th>Username</th>
+                <th>Total Earnings</th>
+            <tr>
+            {{#each users}}
+                {{> user}}
+            {{/each}}
+        </tbody>
+    </table>
 </div>
