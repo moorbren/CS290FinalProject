@@ -6,8 +6,19 @@
     <div class="titleParent">
         <h1>Inventory</h1>
     </div>
-    {{#each items}}
-        {{> item}}
-    {{/each}}
+
+    <table id="itemTable">
+        <tbody>
+            {{> itemCatagories}}
+            {{#each items}}
+                {{> item}}
+            {{/each}}
+
+        </tbody>
+    </table>
+    <div>
+        <button id="sellAllButton" class="invUtilButton" >Sell All</button>
+        <button id="clearValuesButton" class="invUtilButton" >Clear Values</button>
+    </div>
+    <button id="sellButton" class="sellAndBuyButtons" >Sell!</button>
 </div>
-<button id="sellButton">Sell!</button>

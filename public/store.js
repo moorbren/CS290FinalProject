@@ -7,7 +7,6 @@ function handleSellButton() {
 var itemData = [];
 window.addEventListener('DOMContentLoaded', function() {
     var itemElements = document.getElementsByClassName('itemElement');
-    itemElements[itemElements.length-1].classList.replace('itemElement', 'lastItemElement');//adds border to last element
 
     //these are defined in the index
     itemData = compileItemData(itemElements);

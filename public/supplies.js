@@ -50,8 +50,7 @@ function handleBuyButton() {
 window.addEventListener('DOMContentLoaded', function() {
     username = "JoeyFatone"; //TODO :: put code here for getting the user info
     var itemElems = document.querySelectorAll(".itemElement");
-    itemElems[itemElems.length-1].classList.replace('itemElement', 'lastItemElement');//adds border to last element
-    
+
     var buyButton = document.getElementById("buyButton");
     if (buyButton) {
         buyButton.addEventListener("click", handleBuyButton);

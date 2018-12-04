@@ -8,8 +8,13 @@
     <div class="titleParent">
         <h1>Supplies</h1>
     </div>
-    {{#each itemsToDisplay}}
-        {{> item index=@key}}
-    {{/each}}
+    <table id="itemTable">
+        <tbody>
+            {{> itemCatagories}}
+            {{#each itemsToDisplay}}
+                {{> item index=@key}}
+            {{/each}}
+        </tbody>
+    </table>
+    <button id="buyButton" class="sellAndBuyButtons" >Buy!</button>
 </div>
-<button id="buyButton">Buy!</button>

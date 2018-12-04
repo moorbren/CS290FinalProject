@@ -76,6 +76,7 @@ function compileItemData(itemElements){
 //  and then it finds the max itemCounts and sets the dropdown accordingly
 function compileItemDropdowns(itemElements, itemData){
     for(var x = 0; x < itemData.length; x++){
+        //this gets the dropdown element of the item element of which there will always be only one
         var dropdown = itemElements[x].getElementsByTagName('select')[0];
         var itemCount = parseInt(itemData[x].quantity);
         if(itemCount >= 1){
@@ -94,12 +95,13 @@ function compileItemDropdowns(itemElements, itemData){
                         dropdown.insertAdjacentHTML('afterbegin','<option value="' + 100 +'">'+ 100 + '</option>');
                         if(itemCount >= 200){
                             dropdown.insertAdjacentHTML('afterbegin','<option value="' + 200 +'">'+ 200 + '</option>');
-                            if(itemCount >= 201){
-                                dropdown.insertAdjacentHTML('afterbegin','<option value="' + itemCount +'">'+ itemCount + '</option>');
-                            }
                         }
                     }
                 }
+            }
+            //this add the current item total as a sell option in the dropdown, if it doesn't already exist
+            if(parseInt(dropdown.firstElementChild.value) != itemCount){
+                dropdown.insertAdjacentHTML('afterbegin','<option value="' + itemCount +'">'+ itemCount + '</option>');
             }
         }
     }

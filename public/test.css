@@ -136,38 +136,42 @@ body{
     margin-left: var(--edgeDistance);
 }
 
+table, th, td {
+   border: 1px solid black;
+   padding: 3px 3px;
+}
+
+#itemTable{
+    border-collapse: collapse;
+    width: 100%;
+    border-spacing: 20px;
+}
+
+.itemCatagories{
+    background: #ffffb2;
+    padding: 40px;
+}
+.itemCatagories > th{
+    padding: 4px 8px;
+}
+
 .itemElement{
-    padding: 4px;
-    border: 1px solid black;
-    border-bottom: 0px;
+    text-align: center;
     background: white;
 }
 
-.lastItemElement{
-    padding: 4px;
-    border: 1px solid black;
-    background: white;
-}
-
-.itemDropdown{
-    padding: 0px;
-    /* color: green; */
-    /* box-sizing: content-box; */
-}
-
-.itemText{
-    border: 1px solid black;
-    padding:1px;
-}
-
-.notItemImage{
-    margin-bottom: 6px;
-}
+.itemDropdown{min-width: 60px;}
+.itemAmount{ min-width: 26px;}
 
 .itemImage{
-    height: 17px;
-    width:17px;
-    padding-top: 4px;
+    height: 20px;
+    width:20px;
+    display: block;
+    margin: 0 auto;
+}
+
+.sellAndBuyButtons{
+    width: 100%;
 }
 
 #error404 {
