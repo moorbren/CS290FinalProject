@@ -137,9 +137,13 @@ app.get('*', function (req, res) {
 
 app.post("/store/:username/sell", function(req, res, next) {
   //Post Function HERE
+  console.log("sell request received");
   var username = req.params.username;
-  if (req.body && req.body.id && req.body.quantity && (req.body.quantity > 0)){
+  console.log(JSON.stringify(req.body));
+  if (req.body && (req.body.id|| (req.body.id === 0)) && req.body.quantity && (req.body.quantity > 0)){
     db.collection(username).find({id: req.body.id}).toArray(function(err, arr){
+      
+      console.log("username.find Callback");
       if (err) {
         res.status(500).send(JSON.stringify({reason:"badDB", income: 0}));
         return;
@@ -164,10 +168,12 @@ app.post("/store/:username/sell", function(req, res, next) {
       
       db.collection('playerStats').updateOne({name: username}, {$inc :{totalEarnings: totalMade, cash: totalMade}}, function(err, result) {
         //
+        console.log("playerStats.updateOne Callback");
         if (userItemInfo.quantity > req.body.quantity) {
           //user still has some of ITEM left over.
           db.collection(username).updateOne({id: req.body.id}, {$inc: {quantity: -req.body.quantity}}, function(err, result){
             //
+            console.log("username.updateOne Callback");
             if (err) {
               res.status(500).send(JSON.stringify({
                 reason: "leftBehind",
@@ -175,9 +181,11 @@ app.post("/store/:username/sell", function(req, res, next) {
               }));
               return;
             }
-            if (result.result.ok > 0) {
+            if (result.result.ok > 0) { //successful sale!
+              console.log("Successful Sale");
               res.status(200).send(JSON.stringify({
-                income: totalMade
+                income: totalMade, 
+                quantity: req.body.quantity
               }));
               return;
             }
@@ -199,7 +207,8 @@ app.post("/store/:username/sell", function(req, res, next) {
             }
             if (result.result.ok > 0) {
               res.status(200).send(JSON.stringify({
-                income: totalMade
+                income: totalMade,
+                quantity: req.body.quantity
               }));
               return;
             }
@@ -214,18 +223,20 @@ app.post("/store/:username/sell", function(req, res, next) {
     });
   }
 
+  console.log("made it through the post");
+
 });
 app.post("/supplies/:username/buy", function(req, res, next) {
   //Post Function HERE
   var username = req.params.username;
-  if (req.body && req.body.id && req.body.quantity && (req.body.quantity > 0)){
+  if (req.body && (req.body.id || (req.body.id === 0)) && req.body.quantity && (req.body.quantity > 0)){
     db.collection('playerStats').find({name:username}).toArray(function(err, arr){
       if (err) {
-        res.status(500).send("userDB could not connect");
+        res.status(500).send(JSON.stringify({reason:"DB"}));
         return;
       }
       if(arr.length <= 0) {
-        res.status(400).send("user could not be found");
+        res.status(400).send(JSON.stringify({reason:"DB"}));
         return;
       }
       var userInfo = arr[0];
@@ -233,7 +244,7 @@ app.post("/supplies/:username/buy", function(req, res, next) {
       console.log("totalCost::", totalCost);
       console.log("cash::", userInfo.cash);
       if (userInfo.cash < totalCost) {
-        res.status(400).send("You don't have enough money.");
+        res.status(400).send(JSON.stringify({reason:"cash"}));
         return;
       }
       var itemInTransaction = itemsInStock.find(function(a){return (a.id === req.body.id);});
@@ -241,7 +252,7 @@ app.post("/supplies/:username/buy", function(req, res, next) {
       if (itemInTransaction && (itemInTransaction.price === req.body.price)) {
         buySingleItem(username, req.body.id, req.body.price, parseInt(req.body.quantity), function(err, result){
           if (err) {
-            res.status(500).send("::An error occured::");
+            res.status(500).send(JSON.stringify({reason:"DB"}));
             return;
           }
           if (result.result.ok > 0) {
@@ -254,19 +265,19 @@ app.post("/supplies/:username/buy", function(req, res, next) {
             return;
           }
           else {
-            res.status(500).send("something went wrong..."+ JSON.stringify(result));
+            res.status(500).send(JSON.stringify({reason:"DB"}));
             return;
           }
         });
       }
       else {
-        res.status(400).send("Unfortunately, the item could not be found at the specified price");
+        res.status(400).send(JSON.stringify({reason:"stock"}));
         return;
       }
     });
   }
   else {
-    res.status(500).send("Invalid purchase request.");
+    res.status(500).send(JSON.stringify({reason:"req"}));
     return;
   }
   return;

@@ -23,17 +23,32 @@ function handleBuyButton() {
 
                 postRequest.addEventListener('load', function(event) {
                     //handling response from server.
+                    var responseObject = JSON.parse(event.target.response);
                     if(event.target.status != 200){
-                        alert("You don't have enough money to buy that much!!");
+                        if (responseObject.reason === "cash") {
+                            alert("You don't have enough money to buy that much!!");
+                        }
+                        if (responseObject.reason === "DB") {
+                            alert("Database currently unable to process that request.");
+                        }
+                        if (responseObject.reason === "stock") {
+                            alert("Sorry! the item(s) you were looking to purchase are out of stock!");
+                        }
+                        if (responseObject.reason === "req") {
+                            alert("Something went wrong with the request.");
+                        }
+                        location.reload();
                     }else{
                         //if it isn't a 200 status, this crashes the script
                         var responseObject = JSON.parse(event.target.response);
 
-                        var cashElem = document.getElementById("cash");
-                        console.log(cashElem.innerText.slice(1));
-                        console.log(responseObject.price);
-                        var remainingCash = parseInt(cashElem.innerText.slice(1)) - responseObject.price;
-                        cashElem.innerText = "$" + remainingCash;
+                        updateUserCash(-responseObject.price);
+
+                        // var cashElem = document.getElementById("cash");
+                        // console.log(cashElem.innerText.slice(1));
+                        // console.log(responseObject.price);
+                        // var remainingCash = parseInt(cashElem.innerText.slice(1)) - responseObject.price;
+                        // cashElem.innerText = "$" + remainingCash;
                     }
 
                     console.log(event.target.response);

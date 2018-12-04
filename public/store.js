@@ -20,22 +20,65 @@ function handleSellButton() {
                 });
 
                 postRequest.addEventListener('load', function(event){
+                    console.log("RESPONSE RECEIVED");
+                    var responseObject = JSON.parse(event.target.response);
+                    console.log("resonse:", responseObject);
                     if (event.target.status != 200) {
                         alert("somethin went wrong!");
+                        if (responseObject.reason === "quantity") {
+                            //
+                            itemInfo.quantity = responseObject.quantity;
+                            item.setAttribute("data", JSON.stringify(itemInfo)); //Have to remember to set the data.
+                            var values = item.querySelector('select').querySelectorAll('option');
+                            values.forEach(function(optionElem) {
+                                if (parseInt(optionElem.getAttribute("value")) > itemInfo.quantity) {
+                                    optionElem.parentElement.removeChild(optionElem);
+                                    //optionElem.removeFromParent();
+                                }
+                            })
+                        }
+                        else if (responseObject.reason === "not owned") {
+                            //
+                            item.parentNode.removeChild(item);
+                        }
+                        else {
+                            updateUserCash(responseObject.income);
+                        }
+
                     }
                     else {
-                        var responseObject = JSON.parse(event.target.response);
+                        console.log("response 200");
 
-                        var cashElem = document.getElementById("cash");
-                        var remainingCash = parseInt(cashElem.innerText.slice(1) + responseObject.price);
-                        cashElem.innerText = "$" + remainingCash;
+
+                        updateUserCash(responseObject.income);
+                        // var cashElem = document.getElementById("cash");
+                        // console.log(cashElem);
+                        // var remainingCash = parseInt(cashElem.innerText.slice(1)) + responseObject.income;
+                        // console.log(remainingCash);
+                        // cashElem.innerText = "$" + remainingCash;
+                        console.log("IIQ::",itemInfo.quantity);
+                        console.log("ROQ::",responseObject.quantity);
 
                         itemInfo.quantity -= responseObject.quantity;
+                        //console.log(JSON.stringify(itemInfo));
                         if (itemInfo.quantity <= 0) {
+                            console.log("sold out!");
                             item.parentElement.removeChild(item);
                         }
+                        else {
+                            item.querySelector(".itemAmount").innerText = parseInt(item.querySelector(".itemAmount").innerText) - responseObject.quantity;
+                        }
+                        item.setAttribute("data", JSON.stringify(itemInfo)); //Have to remember to set the data.
+                        var values = item.querySelector('select').querySelectorAll('option');
+                        values.forEach(function(optionElem) {
+                            if (parseInt(optionElem.getAttribute("value")) > itemInfo.quantity) {
+                                optionElem.parentElement.removeChild(optionElem);
+                                //optionElem.removeFromParent();
+                            }
+                        })
                     }
                 });
+                console.log("response sent");
                 postRequest.setRequestHeader('Content-Type', 'application/json');
                 postRequest.send(requestBody);
 
