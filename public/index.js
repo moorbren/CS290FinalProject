@@ -1,3 +1,5 @@
+//note itemData and itemElements match via item indices
+//EX. itemData[0] == itemElements[0]
 var itemElements = undefined;
 function getItemElements(){
     if(itemElements == undefined){
@@ -14,7 +16,6 @@ function reloadItemElements(){
 var itemData = undefined;
 function getItemData(){
     if(itemData == undefined){
-        console.log("test");
         reloadItemData(getItemElements());
     }
     return itemData;

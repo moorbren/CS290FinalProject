@@ -1,4 +1,7 @@
 <tr class="itemElement" data="{{json .}}">
+    {{#if @root.items}}
+        <td class="changeInPrice" ></td>
+    {{/if}}
     <td class="itemText moneyText">${{price}}</td>
 
     <!-- Because of crazy handlebars scoping, you can't see if the parent array is defined unless you do this stupid shit -->
