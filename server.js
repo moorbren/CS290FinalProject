@@ -7,8 +7,8 @@ var NUM_TOP_PLAYERS = 10;
 var topPlayers = [];
 var allPlayers = [];
 
-var STOCK_REFRESH_DELAY = 600000;
-var NUM_ITEMS_STOCK = 5;
+var STOCK_REFRESH_DELAY = 300000;
+var NUM_ITEMS_STOCK = 10;
 var itemsInStock = [];
 
 
@@ -416,6 +416,20 @@ function restockItems() {
   }
   itemsInStock = out.map(function(n){return itemsArray[n];});
   setTimeout(restockItems,STOCK_REFRESH_DELAY);
+  resetPrices();
+}
+
+var count = 0;
+function resetPrices() {
+  console.log("RESETTING PRICES!!!!");
+  for (i = 0; i < itemsArray.length; i++) {
+    itemsArray[i].price = getRandomArbitrary(100,1500);
+    db.collection('items').updateOne({id:i}, {$set: {price: itemsArray[i].price}},function(err, result) {
+      //
+      return;      
+    });
+  }
+  setTimeout(resetPrices, 10000)
 }
 
 
@@ -516,3 +530,5 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
      }
    });
  }
+
+ 
