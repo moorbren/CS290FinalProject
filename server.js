@@ -78,7 +78,10 @@ app.get('/store', function(req, res, next){
     userInfo=usr[0];
 
     db.collection(userInfo.name).find({}).toArray(function(err, userItems) {
-
+	  //returns items sorted by quantity
+	  userItems.sort(function(a, b){
+  	    return b.quantity - a.quantity;
+  	  });
       userInfo["items"] = userItems.map(function(a){
         var out = itemsArray[a.id];
         out.quantity=a.quantity;
@@ -143,7 +146,7 @@ app.post("/store/:username/sell", function(req, res, next) {
   console.log(JSON.stringify(req.body));
   if (req.body && (req.body.id|| (req.body.id === 0)) && req.body.quantity && (req.body.quantity > 0)){
     db.collection(username).find({id: req.body.id}).toArray(function(err, arr){
-      
+
       console.log("username.find Callback");
       if (err) {
         res.status(500).send(JSON.stringify({reason:"badDB", income: 0}));
@@ -185,7 +188,7 @@ app.post("/store/:username/sell", function(req, res, next) {
             if (result.result.ok > 0) { //successful sale!
               console.log("Successful Sale");
               res.status(200).send(JSON.stringify({
-                income: totalMade, 
+                income: totalMade,
                 quantity: req.body.quantity
               }));
               return;

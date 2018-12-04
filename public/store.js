@@ -87,7 +87,6 @@ function handleSellButton() {
         }
     });
 }
-
 //
 function fixChangesInPrice(){
     var itemElems = getItemElements();
@@ -114,7 +113,7 @@ window.addEventListener('DOMContentLoaded', function() {
     //these are defined in the index
     compileItemDropdowns(getItemElements(), getItemData());
     fixChangesInPrice();
-    var dat = [10,100,1000,10000,100000,20000,30000,50000,100000];
+    var dat = [1000,1200,6000,10000,8462,20000,30000,50000,100000];
     loadChart(dat); //input data here
 
     var sellButton = document.getElementById("sellButton");

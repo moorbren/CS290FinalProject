@@ -1,5 +1,5 @@
  * { /* Default settings */
-  --headerSize: 50px;
+  --headerSize: 60px;
   --edgeDistance: 20px;
   --colorOrangy: #FFA36C;
 
@@ -84,12 +84,13 @@ body{
 }
 
 #leaderboard{
-    float: right;
+
+    float: left;
     width: 600px;
     height: auto;
     border: 2px solid black;
     padding: 8px;
-    margin-right: var(--edgeDistance);
+    margin-left: var(--edgeDistance);
 
 }
 
@@ -243,6 +244,7 @@ table, th, td {
     float: left;
     display: inline-block;
     margin-left: var(--edgeDistance);
+    margin-bottom: var(--edgeDistance);
 }
 
 .gameDescImgHeader{
