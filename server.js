@@ -137,6 +137,82 @@ app.get('*', function (req, res) {
 
 app.post("/store/:username/sell", function(req, res, next) {
   //Post Function HERE
+  var username = req.params.username;
+  if (req.body && req.body.id && req.body.quantity && (req.body.quantity > 0)){
+    db.collection(username).find({id: req.body.id}).toArray(function(err, arr){
+      if (err) {
+        res.status(500).send(JSON.stringify({reason:"badDB", income: 0}));
+        return;
+      }
+      if(arr.length <= 0) {
+        res.status(400).send({reason: "not owned", id: req.body.id});
+        return;
+      }
+      var userItemInfo = arr[0];
+      if (req.body.quantity > userItemInfo.quantity) {
+        userItemInfo.reason = "quantity"; //give em a reason
+        res.status(400).send(userItemInfo); //correct the error
+        return;
+      }
+
+      /**
+       * the database connection has gone through.
+       * the item has been found in the user inventory.
+       * the quantity is a valid quantity.
+       */
+      var totalMade = req.body.quantity * itemsArray[req.body.id].price;
+      
+      db.collection('playerStats').updateOne({name: username}, {$inc :{totalEarnings: totalMade, cash: totalMade}}, function(err, result) {
+        //
+        if (userItemInfo.quantity > req.body.quantity) {
+          //user still has some of ITEM left over.
+          db.collection(username).updateOne({id: req.body.id}, {$inc: {quantity: -req.body.quantity}}, function(err, result){
+            //
+            if (err) {
+              res.status(500).send(JSON.stringify({
+                reason: "leftBehind",
+                income: totalMade
+              }));
+              return;
+            }
+            if (result.result.ok > 0) {
+              res.status(200).send(JSON.stringify({
+                income: totalMade
+              }));
+              return;
+            }
+            else {
+              res.status(500).send(JSON.stringify({reason:"badDB", income: totalMade}));
+              return;
+            }
+          });
+        }
+        else {
+          //user is sold out of ITEM. must remove this entry.
+          db.collection(username).remove({id: req.body.id}, function(err, result){
+            if (err) {
+              res.status(500).send(JSON.stringify({
+                reason: "leftBehind",
+                income: totalMade
+              }));
+              return;
+            }
+            if (result.result.ok > 0) {
+              res.status(200).send(JSON.stringify({
+                income: totalMade
+              }));
+              return;
+            }
+            else {
+              res.status(500).send(JSON.stringify({reason:"badDB", income: totalMade}));
+              return;
+            }
+          });
+        }
+      });
+
+    }
+  }
 
 });
 app.post("/supplies/:username/buy", function(req, res, next) {
@@ -420,6 +496,9 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
         }
         else if (result.result.ok > 0) {
           db.collection("playerStats").updateOne({name: username}, {$inc: {cash: -(costIncurred)}}, callback);
+        }
+        else {
+          callback(err, undefined);
         }
       });
      }
