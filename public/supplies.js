@@ -52,7 +52,7 @@ window.addEventListener('DOMContentLoaded', function() {
     for(var x = 0; x < 1000; x++){
         dat.push(x);
     }
-    loadChart(dat);
+    loadChart(dat);//input data here
 
     var buyButton = document.getElementById("buyButton");
     if (buyButton) {

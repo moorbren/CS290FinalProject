@@ -64,17 +64,33 @@ function fixChangesInPrice(){
     }
 }
 
+function genRandomUsers(){
+    var names = ['Tom', 'Mike', 'David', 'John', 'Tony', '69Slayer420', 'Babe909', 'LewisBrindles', 'ClassicBoy'];
+    // {
+    // 	"_id" : ObjectId("5c01dce6ae1f8b6a87be7b56"),
+    // 	"name" : "JoeyFatone",
+    // 	"start" : "Fri Nov 30 2018 16:58:57 GMT-0800 (Pacific Standard Time)",
+    // 	"cash" : 119252,
+    // 	"totalEarnings" : 106541
+    // }
+    for (var x = 0; x < names.length; x++){
+        console.log('db.playerStats.insertOne({ name:"'+ names[x] +'", start: "Fri Nov 30 2018 16:58:57 GMT-0800 (Pacific Standard Time)", cash: ' +(Math.floor(Math.random() * 20000)) +',totalEarnings:'+(Math.floor(Math.random() * 20000)) +'})');
+    }
+
+
+}
+
 
 window.addEventListener('DOMContentLoaded', function() {
 
     username = "JoeyFatone"; //TODO :: put code here for getting the user info
-
+    genRandomUsers();
 
     //these are defined in the index
     compileItemDropdowns(getItemElements(), getItemData());
     fixChangesInPrice();
     var dat = [10,100,1000,10000,100000,20000,30000,50000,100000];
-    loadChart(dat);
+    loadChart(dat); //input data here
 
     var sellButton = document.getElementById("sellButton");
     if (sellButton) {
@@ -92,6 +108,6 @@ window.addEventListener('DOMContentLoaded', function() {
         clearValuesButton.addEventListener('click',setAllValuesDropdown);
     }
 
-    
+
 
 });

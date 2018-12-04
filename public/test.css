@@ -86,9 +86,9 @@ body{
 #leaderboard{
     float: right;
     width: 600px;
-    height: 250px;
+    height: auto;
     border: 2px solid black;
-    padding: 4px;
+    padding: 8px;
     margin-right: var(--edgeDistance);
 
 }
@@ -227,7 +227,7 @@ table, th, td {
     width: 650px;
     height: auto;
     border: 2px solid black;
-    padding: 5px;
+    padding: 8px;
     padding-bottom: 12px;
     float: left;
     display: inline-block;
