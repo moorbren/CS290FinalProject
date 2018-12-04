@@ -11,7 +11,7 @@ function handleBuyButton() {
             if (quantityInput.value > 0) { //the quantity is greater than zero, therefore we are buying at least one of these.
                 //TODO :: cash considerations.
                 //anti-cheat code must still be implemented on the server-side.
-                console.log(quantityInput.value);
+                //console.log(quantityInput.value);
                 var postRequest = new XMLHttpRequest();
                 var requestURL = '/supplies/'+username + "/buy";
                 postRequest.open("POST", requestURL);
@@ -55,7 +55,7 @@ function handleBuyButton() {
                         // cashElem.innerText = "$" + remainingCash;
                     }
                     clearBuyFields();
-                    console.log(event.target.response);
+                    //console.log(event.target.response);
                 });
 
                 postRequest.setRequestHeader('Content-Type', 'application/json');

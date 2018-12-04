@@ -187,9 +187,9 @@ hellButton.addEventListener('click', uhoh);
 
 function updateUserCash(cash) {
     var cashElem = document.getElementById("cash");
-    console.log(cashElem);
+    //console.log(cashElem);
     var remainingCash = parseInt(cashElem.innerText.slice(1)) + cash;
-    console.log(remainingCash);
+    //console.log(remainingCash);
     cashElem.innerText = "$" + remainingCash;
 
     if (cash > 0) {

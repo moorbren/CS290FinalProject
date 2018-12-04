@@ -59,7 +59,7 @@ app.set('view engine', 'handlebars');
 
 app.get('/', function(req, res, next){
 	db.collection('playerStats').find({}).toArray(function(err, user){
-		console.log("user",user);
+		//console.log("user",user);
 	});
 
 	console.log("==200 incoming request-URL::", req.url);
@@ -67,7 +67,7 @@ app.get('/', function(req, res, next){
 });
 
 app.get('/store', function(req, res, next){
-  console.log("==incoming request-URL::", req.url);
+  //console.log("==incoming request-URL::", req.url);
   var userInfo;
   //console.log("db::", db);
   //console.log("collection()====", db.collection('playerStats'));
@@ -95,14 +95,14 @@ app.get('/store', function(req, res, next){
 });
 
 app.get('/supplies', function(req, res, next){
-  console.log("==incoming request-URL::", req.url);
+  //console.log("==incoming request-URL::", req.url);
   db.collection('playerStats').find({name:"JoeyFatone"}).toArray(function(err, usr) {
     if (err) {
       throw err;
     }
     userInfo=usr[0];
     userInfo["itemsToDisplay"] = itemsInStock;
-    console.log(itemsInStock);
+    //console.log(itemsInStock);
 
     res.status(200).render("supplies", userInfo);
   });
@@ -110,7 +110,7 @@ app.get('/supplies', function(req, res, next){
 });
 
 app.get('/crafting', function(req, res, next){
-  console.log("==incoming request-URL::", req.url);
+  //console.log("==incoming request-URL::", req.url);
   db.collection('playerStats').find({name:"JoeyFatone"}).toArray(function(err, usr) {
     if (err) {
       throw err;
@@ -121,33 +121,33 @@ app.get('/crafting', function(req, res, next){
 })
 
 app.get('/:section', function(req, res, next){
-  console.log("==incoming request-URL::", req.url);
+  //console.log("==incoming request-URL::", req.url);
   var section = req.params.section.toLowerCase();
   if (availablePages.indexOf(section) > -1) {
-    console.log("==section found::"+section);
+    //console.log("==section found::"+section);
 
     res.status(200).render(req.params.section);
   }
   else {
-    console.log("==404 section not found::"+req.params.section);
+    //console.log("==404 section not found::"+req.params.section);
     next();
   }
 });
 
 app.get('*', function (req, res) {
-  console.log("==404 incoming request-URL::", req.url);
+  //console.log("==404 incoming request-URL::", req.url);
   res.status(404).render('404');
 });
 
 app.post("/store/:username/sell", function(req, res, next) {
   //Post Function HERE
-  console.log("sell request received");
+  //console.log("sell request received");
   var username = req.params.username;
-  console.log(JSON.stringify(req.body));
+  //console.log(JSON.stringify(req.body));
   if (req.body && (req.body.id|| (req.body.id === 0)) && req.body.quantity && (req.body.quantity > 0)){
     db.collection(username).find({id: req.body.id}).toArray(function(err, arr){
 
-      console.log("username.find Callback");
+      //console.log("username.find Callback");
       if (err) {
         res.status(500).send(JSON.stringify({reason:"badDB", income: 0}));
         return;
@@ -172,12 +172,12 @@ app.post("/store/:username/sell", function(req, res, next) {
 
       db.collection('playerStats').updateOne({name: username}, {$inc :{totalEarnings: totalMade, cash: totalMade}}, function(err, result) {
         //
-        console.log("playerStats.updateOne Callback");
+        //console.log("playerStats.updateOne Callback");
         if (userItemInfo.quantity > req.body.quantity) {
           //user still has some of ITEM left over.
           db.collection(username).updateOne({id: req.body.id}, {$inc: {quantity: -req.body.quantity}}, function(err, result){
             //
-            console.log("username.updateOne Callback");
+            //console.log("username.updateOne Callback");
             if (err) {
               res.status(500).send(JSON.stringify({
                 reason: "leftBehind",
@@ -186,7 +186,7 @@ app.post("/store/:username/sell", function(req, res, next) {
               return;
             }
             if (result.result.ok > 0) { //successful sale!
-              console.log("Successful Sale");
+              //console.log("Successful Sale");
               res.status(200).send(JSON.stringify({
                 income: totalMade,
                 quantity: req.body.quantity
@@ -227,7 +227,7 @@ app.post("/store/:username/sell", function(req, res, next) {
     });
   }
 
-  console.log("made it through the post");
+  //console.log("made it through the post");
 
 });
 app.post("/supplies/:username/buy", function(req, res, next) {
@@ -245,14 +245,14 @@ app.post("/supplies/:username/buy", function(req, res, next) {
       }
       var userInfo = arr[0];
       var totalCost = req.body.quantity * req.body.price;
-      console.log("totalCost::", totalCost);
-      console.log("cash::", userInfo.cash);
+      //console.log("totalCost::", totalCost);
+      //console.log("cash::", userInfo.cash);
       if (userInfo.cash < totalCost) {
         res.status(400).send(JSON.stringify({reason:"cash"}));
         return;
       }
       var itemInTransaction = itemsInStock.find(function(a){return (a.id === req.body.id);});
-      console.log("itemInTransaction::", itemInTransaction);
+      //console.log("itemInTransaction::", itemInTransaction);
       if (itemInTransaction && (itemInTransaction.price === req.body.price)) {
         buySingleItem(username, req.body.id, req.body.price, parseInt(req.body.quantity), function(err, result){
           if (err) {
@@ -300,7 +300,7 @@ function tickServer() {
   var newTime = Date.now();
   var deltaTime = newTime - time;
   time = newTime;
-  console.log("deltaTime:: ", deltaTime);
+  //console.log("deltaTime:: ", deltaTime);
 
   /* SERVER-SIDE GAME LOGIC GOES IN HERE
     This function will be called roughly every [tickTime] milliseconds, and it'll allow us to have an asynchronous game "loop" so it's going to be used to handle all the non-I/O logic.
@@ -320,7 +320,7 @@ function startGameLoop() {
 
 
 mongoClient.connect(mongoURL, function(err, client) {
-  console.log("mongoURL:: " , mongoURL);
+  //console.log("mongoURL:: " , mongoURL);
   if (err){
     throw err;
   }
@@ -329,13 +329,13 @@ mongoClient.connect(mongoURL, function(err, client) {
   db.collection('items').find({}).toArray(function(err, arr){
     itemsArray=arr;
     itemsArray.sort(function(a,b){return a.id-b.id;})
-    console.log(itemsArray);
+    //console.log(itemsArray);
     restockItems();
     db.collection('playerStats').find({}).toArray(function(err, playerStatistics) {
 
       getTopPlayers(playerStatistics);
 
-      console.log("=======\n===\n===\n===\n===\n=======");
+      //console.log("=======\n===\n===\n===\n===\n=======");
       //buyItem("JoeyFatone",[1,2,3,0],[810,215,179,493],[1,1,1,1]);
       /*
       buySingleItem("JoeyFatone", 24, 100, 10, function(err, response) {
@@ -356,7 +356,7 @@ mongoClient.connect(mongoURL, function(err, client) {
 
 
       app.listen(port, function () {
-        console.log("== Server is listening on port", port);
+        //console.log("== Server is listening on port", port);
         const timeoutScheduled = Date.now();
 
       });
@@ -424,7 +424,7 @@ function restockItems() {
 
 var count = 0;
 function resetPrices() {
-  console.log("RESETTING PRICES!!!!");
+  //console.log("RESETTING PRICES!!!!");
   for (i = 0; i < itemsArray.length; i++) {
     itemsArray[i].price = getRandomArbitrary(100,1500);
     db.collection('items').updateOne({id:i}, {$set: {price: itemsArray[i].price}},function(err, result) {
@@ -456,8 +456,8 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
   var itemsPurchased;
   db.collection(username).find({id: {$in : itemIds}}).toArray(function(err, arr){
     itemsPurchased = arr; //owned items
-    console.log("::itemsPurchased::");
-    console.log(itemsPurchased);
+    //console.log("::itemsPurchased::");
+    //console.log(itemsPurchased);
     for (i = 0; i < itemIds.length; i++) {
       //itemIds is the array of ids of items being purchased.
       var playerOwnedItem = itemsPurchased.find(function(item){
@@ -465,18 +465,18 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
       });
       if (playerOwnedItem) {
         //player has previously purchased this item.
-        console.log("id: ", itemIds[i], "|| playerPrice:", playerOwnedItem.price, "|| marketPrice:", purchasePrices[i]);
-        console.log("id: ", itemIds[i], "|| playerQuantity:", playerOwnedItem.quantity, "|| purchasing:", purchaseQuantities[i]);
+        //console.log("id: ", itemIds[i], "|| playerPrice:", playerOwnedItem.price, "|| marketPrice:", purchasePrices[i]);
+        //console.log("id: ", itemIds[i], "|| playerQuantity:", playerOwnedItem.quantity, "|| purchasing:", purchaseQuantities[i]);
         var totalPaid     = playerOwnedItem.price * playerOwnedItem.quantity;
         var incurredCost  = purchasePrices[i] * purchaseQuantities[i];
         var totalAmount   = playerOwnedItem.quantity + purchaseQuantities[i];
         var avgCost = (totalPaid+incurredCost) / totalAmount;
-        console.log("id: ", itemIds[i], "|| playerQuantity:", playerOwnedItem.quantity, "|| totalAmount:", purchaseQuantities[i]);
+        //console.log("id: ", itemIds[i], "|| playerQuantity:", playerOwnedItem.quantity, "|| totalAmount:", purchaseQuantities[i]);
         db.collection(username).updateOne({id:itemIds[i]}, {$set: {price:avgCost, quantity:totalAmount}}, function(err, res){console.log("PURCHASEOWNED::", res);});
       }
       else {
         //player has not previously purchased this item.
-        console.log("id: ", itemIds[i], "|| undefined:", playerOwnedItem, "|| marketPrice:", purchasePrices[i]);
+        //console.log("id: ", itemIds[i], "|| undefined:", playerOwnedItem, "|| marketPrice:", purchasePrices[i]);
         //db.collection(username).updateOne({id:itemIds[i]}, {price:avgCost, quantity:totalAmount}, callback);
         db.collection(username).insertOne({id: itemIds[i], quantity: purchaseQuantities[i], price: purchasePrices[i]}, function(err, res){console.log("PURCHASENEW:",i,":", res);});
       }
@@ -504,7 +504,7 @@ function buyItem(username, itemIds, purchasePrices, purchaseQuantities, callback
       var totalAmount = playerOwnedItem.quantity + purchaseQuantity;
       var avgCost = (totalPaid + costIncurred) / totalAmount;
       db.collection(username).updateOne({id: itemId}, {$set: {quantity: totalAmount, price: avgCost}}, function (err, result) {
-        console.log("idk");
+        //console.log("idk");
         if (err) {
           callback(err, result);
         }

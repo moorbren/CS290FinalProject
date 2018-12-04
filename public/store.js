@@ -9,7 +9,7 @@ function handleSellButton() {
         var quantityInput = item.querySelector('.quantityInput');
         if (quantityInput) {
             if ((quantityInput.value > 0)&&(quantityInput.value <= itemInfo.quantity)) {
-                console.log(quantityInput.value);
+                //console.log(quantityInput.value);
                 var postRequest = new XMLHttpRequest();
                 var requestURL = '/store/'+username + "/sell";
                 postRequest.open("POST", requestURL);
@@ -20,9 +20,9 @@ function handleSellButton() {
                 });
 
                 postRequest.addEventListener('load', function(event){
-                    console.log("RESPONSE RECEIVED");
+                    //console.log("RESPONSE RECEIVED");
                     var responseObject = JSON.parse(event.target.response);
-                    console.log("resonse:", responseObject);
+                    //console.log("resonse:", responseObject);
                     if (event.target.status != 200) {
                         alert("somethin went wrong!");
                         if (responseObject.reason === "quantity") {
@@ -47,7 +47,7 @@ function handleSellButton() {
 
                     }
                     else {
-                        console.log("response 200");
+                        //console.log("response 200");
 
 
                         updateUserCash(responseObject.income);
@@ -56,13 +56,13 @@ function handleSellButton() {
                         // var remainingCash = parseInt(cashElem.innerText.slice(1)) + responseObject.income;
                         // console.log(remainingCash);
                         // cashElem.innerText = "$" + remainingCash;
-                        console.log("IIQ::",itemInfo.quantity);
-                        console.log("ROQ::",responseObject.quantity);
+                        //console.log("IIQ::",itemInfo.quantity);
+                        //console.log("ROQ::",responseObject.quantity);
 
                         itemInfo.quantity -= responseObject.quantity;
                         //console.log(JSON.stringify(itemInfo));
                         if (itemInfo.quantity <= 0) {
-                            console.log("sold out!");
+                            //console.log("sold out!");
                             item.parentElement.removeChild(item);
                         }
                         else {
@@ -78,7 +78,7 @@ function handleSellButton() {
                         })
                     }
                 });
-                console.log("response sent");
+                //console.log("response sent");
                 postRequest.setRequestHeader('Content-Type', 'application/json');
                 postRequest.send(requestBody);
 
