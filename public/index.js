@@ -183,3 +183,18 @@ function uhoh(){
 
 var hellButton = document.querySelector("#hell");
 hellButton.addEventListener('click', uhoh);
+
+
+function updateUserCash(cash) {
+    var cashElem = document.getElementById("cash");
+    console.log(cashElem);
+    var remainingCash = parseInt(cashElem.innerText.slice(1)) + cash;
+    console.log(remainingCash);
+    cashElem.innerText = "$" + remainingCash;
+
+    if (cash > 0) {
+        var earningsElem = document.getElementById("earnings");
+        var newEarnings = parseInt(earningsElem.innerText.slice(1))+ cash
+        earningsElem.innerText = "$" + newEarnings;
+    }
+}
