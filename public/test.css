@@ -200,6 +200,10 @@ table, th, td {
 
 }
 
+.earningsChart{
+    background-color: white;
+}
+
 #error404 {
   margin-top: var(--headerSize);
 }
