@@ -19,7 +19,7 @@ function handleSellButton() {
                     price: itemInfo.price
                 });
 
-                postRequest.addEventListener('load', function(event)) {
+                postRequest.addEventListener('load', function(event){
                     if (event.target.status != 200) {
                         alert("somethin went wrong!");
                     }
@@ -35,8 +35,12 @@ function handleSellButton() {
                             item.parentElement.removeChild(item);
                         }
                     }
-                }
+                });
+                postRequest.setRequestHeader('Content-Type', 'application/json');
+                postRequest.send(requestBody);
+
             }
+
         }
     });
 }
