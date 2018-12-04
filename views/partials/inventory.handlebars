@@ -9,16 +9,15 @@
 
     <table id="itemTable">
         <tbody>
-            {{> itemCatagories}}
+            {{> tableCatagories}}
             {{#each items}}
                 {{> item}}
             {{/each}}
-
         </tbody>
     </table>
-    <div>
-        <button id="sellAllButton" class="invUtilButton" >Sell All</button>
-        <button id="clearValuesButton" class="invUtilButton" >Clear Values</button>
+    <div class="utilButtonParent" >
+        <button id="sellAllButton" class="invUtilButton invButtonStyle" >Sell All</button>
+        <button id="clearValuesButton" class="invUtilButton invButtonStyle" >Clear Values</button>
+        <button id="sellButton" class="sellAndBuyButtons invButtonStyle" >Sell!</button>
     </div>
-    <button id="sellButton" class="sellAndBuyButtons" >Sell!</button>
 </div>

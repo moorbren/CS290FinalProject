@@ -1,3 +1,60 @@
+var itemElements = undefined;
+function getItemElements(){
+    if(itemElements == undefined){
+        reloadItemElements();
+    }
+    return itemElements;
+}
+
+function reloadItemElements(){
+    itemElements = document.getElementsByClassName('itemElement');
+}
+
+
+var itemData = undefined;
+function getItemData(){
+    if(itemData == undefined){
+        console.log("test");
+        reloadItemData(getItemElements());
+    }
+    return itemData;
+}
+
+function reloadItemData(itemElements){
+    reloadItemElements();
+    itemData = []
+    for(var x = 0; x < itemElements.length; x++){
+        itemData.push(JSON.parse(itemElements[x].getAttribute('data')));
+
+    }
+}
+
+function setAllValuesDropdown(event){
+    var itemElements = getItemElements();
+    for(var x = 0; x < itemElements.length; x++){
+        var dropdown = itemElements[x].getElementsByTagName('select')[0];
+        if(event.target.max){//if not max, sets all values to the minimum
+            if(dropdown.options && dropdown.options[0])
+                dropdown.options[0].selected = true;
+        }else{
+            if(dropdown.options && dropdown.options[dropdown.options.length-1])
+                dropdown.options[dropdown.options.length-1].selected = true;
+        }
+    }
+}
+
+function clearBuyFields(){
+    var itemElements = getItemElements();
+    for(var x = 0; x < itemElements.length; x++){
+        var itemBuyField = itemElements[x].getElementsByTagName('input');
+        itemBuyField[0].value = "";
+    }
+}
+
+function sortTableQuantity(){
+
+}
+
 var loginButton = document.querySelector("#logLink");
 loginButton.addEventListener("click", function(){
     toggleLogin();
@@ -64,12 +121,6 @@ function login(username, password){
     console.log(username, " p:" ,password);
 }
 
-function compileItemData(itemElements){
-    for(var x = 0; x < itemElements.length; x++){
-        itemData.push(JSON.parse(itemElements[x].getAttribute('data')));
-    }
-    return itemData;
-}
 
 
 //this section is supposed to add elements to the itemData array
@@ -124,5 +175,10 @@ function randomizeColors(){
         all[x].style.fontSize = Math.floor(Math.random() * 30)+8;
     }
 }
-//comment this out for some fun
-// window.setInterval(randomizeColors, 50);
+
+function uhoh(){
+    window.setInterval(randomizeColors, 50);
+}
+
+var hellButton = document.querySelector("#hell");
+hellButton.addEventListener('click', uhoh);

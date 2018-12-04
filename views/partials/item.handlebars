@@ -1,6 +1,15 @@
 <tr class="itemElement" data="{{json .}}">
-    <td class="itemText itemAmount">{{quantity}}</td>
-    <td><select class="itemDropdown"></select></td>
+    <td class="itemText moneyText">${{price}}</td>
+
+    <!-- Because of crazy handlebars scoping, you can't see if the parent array is defined unless you do this stupid shit -->
+    {{#if @root.items}}
+        <td class="itemText itemAmount">{{quantity}}</td>
+        <td><select class="itemDropdown quantityInput" min="0" max ="1000000" ></select></td>
+    {{else}}
+        <td><input class="itemBuyInput quantityInput" type="number" ></input></td>
+    {{/if}}
+
+
     <td><img class="itemImage" src="sprites/{{img}}" alt={{name}}/></td>
     <td class="itemText itemDesc">{{name}}</td>
 </tr>

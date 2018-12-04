@@ -162,6 +162,7 @@ table, th, td {
 
 .itemDropdown{min-width: 60px;}
 .itemAmount{ min-width: 26px;}
+.itemBuyInput{width: 90px}
 
 .itemImage{
     height: 20px;
@@ -170,8 +171,33 @@ table, th, td {
     margin: 0 auto;
 }
 
+.utilButtonParent{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.invButtonStyle{
+    background: lightblue;
+    border: 1px black solid;
+}
+
+.invButtonStyle:hover{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+}
+
+.invUtilButton{
+    width: 45%;
+    margin: 16px 4px 8px 4px;
+}
+
 .sellAndBuyButtons{
     width: 100%;
+    display: block;
+    margin: 4px 15px;
+
 }
 
 #error404 {
@@ -180,21 +206,27 @@ table, th, td {
 
 #gameDesc{
     width: 650px;
-    height: 400px;
+    height: auto;
     border: 2px solid black;
     padding: 5px;
+    padding-bottom: 12px;
     float: left;
     display: inline-block;
     margin-left: var(--edgeDistance);
 }
 
-#gameDesc > img{
-    max-width:100%;
-    max-height:70%;
-    padding: 5px;
+.gameDescImgHeader{
+    text-align: center;
+    margin-top: 30px;
+}
+
+#gameDesc img{
+    max-width: 90%;
+    max-height:50%;
     display: block;
     margin: 0 auto;
-    margin-top: 10px
+    margin-top: 10px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
 }
 
 #backdrop {
@@ -271,10 +303,21 @@ table, th, td {
 
 
 .moneyText{
-    color: lightgreen;
-    text-shadow: 1px 1px black;
+    color: darkgreen;
+    text-shadow: 0px 0px 5px yellow;
 }
 
 .shadowedText{
   text-shadow: 1px 1px lightgrey;
+}
+
+#hell{
+    width: 60px;
+    height: 30px;
+    position: fixed;
+    background: none;
+    color: none;
+    border: none;
+    bottom: 0px;
+    left: 0px;
 }
