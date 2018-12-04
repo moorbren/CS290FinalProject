@@ -3,7 +3,7 @@
  */
 
 var TOP_PLAYER_REFRESH_DELAY = 600000;
-var NUM_TOP_PLAYERS = 5;
+var NUM_TOP_PLAYERS = 10;
 var topPlayers = [];
 var allPlayers = [];
 
@@ -58,9 +58,10 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 app.get('/', function(req, res, next){
-	db.collection('JoeyFatone').find({}).toArray(function(err, user){
+	db.collection('playerStats').find({}).toArray(function(err, user){
 		console.log("user",user);
 	});
+
 	console.log("==200 incoming request-URL::", req.url);
 	res.status(200).render('home', {users: topPlayers});
 });
@@ -165,7 +166,7 @@ app.post("/store/:username/sell", function(req, res, next) {
        * the quantity is a valid quantity.
        */
       var totalMade = req.body.quantity * itemsArray[req.body.id].price;
-      
+
       db.collection('playerStats').updateOne({name: username}, {$inc :{totalEarnings: totalMade, cash: totalMade}}, function(err, result) {
         //
         console.log("playerStats.updateOne Callback");
@@ -388,7 +389,7 @@ function recalcTopPlayers() {
 function getTopPlayers(playerStatistics) {
 
   playerStatistics.sort(function(a, b){
-    return a.totalEarnings - b.totalEarnings;
+    return b.totalEarnings - a.totalEarnings;
   });
 
   allPlayers=playerStatistics;
