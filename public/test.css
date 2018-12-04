@@ -90,7 +90,8 @@ body{
     height: 250px;
     border: 2px solid black;
     padding: 4px;
-    margin-right: var(--edgeDistance);
+    margin-left: var(--edgeDistance);
+
 }
 
 #sidebar{
@@ -206,8 +207,13 @@ table, th, td {
 .earningsChart{
     margin-right: 20px;
     background-color: white;
-    flex-basis: 100%;
-    max-height: 600px;
+    width:100%;
+    max-height: 500px;
+}
+
+#chartContainer{
+    /* max-height: 500px; */
+    width:100%
 }
 
 #error404 {
