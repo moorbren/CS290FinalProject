@@ -87,7 +87,6 @@ function handleSellButton() {
         }
     });
 }
-
 //
 function fixChangesInPrice(){
     var itemElems = getItemElements();
