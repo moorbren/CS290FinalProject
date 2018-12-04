@@ -211,7 +211,7 @@ app.post("/store/:username/sell", function(req, res, next) {
         }
       });
 
-    }
+    });
   }
 
 });
