@@ -4,12 +4,12 @@
   "description": "Web based store game.",
   "main": "index.js",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "chart.js": "^2.7.3",
-    "express": "^4.16.4",
-    "express-handlebars": "^3.0.0",
-    "handlebars": "^4.1.2",
-    "mongodb": "^3.1.10",
+    "body-parser": "^1.19.0",
+    "chart.js": "^2.8.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "handlebars": "^4.2.0",
+    "mongodb": "^3.3.2",
     "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
